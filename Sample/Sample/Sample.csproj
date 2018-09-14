@@ -18,8 +18,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Plugin.Jobs\Plugin.Jobs.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Jobs\" />
-  </ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -67,10 +68,9 @@ namespace Plugin.Jobs
                         count++;
                         this.LogJob(JobState.Start, job, runId);
                         var service = CrossJobs.Factory.GetInstance(job);
-                        var lastRun = CrossJobs.Repository.GetLastRuntime(job.Name);
 
                         await service
-                            .Run(lastRun, job.Parameters, cancelSrc.Token)
+                            .Run(job, cancelSrc.Token)
                             .ConfigureAwait(false);
 
                         this.LogJob(JobState.Finish, job, runId);
@@ -80,6 +80,11 @@ namespace Plugin.Jobs
                 {
                     errors++;
                     this.LogJob(JobState.Error, job, runId);
+                }
+                finally
+                {
+                    job.LastRunUtc = DateTime.UtcNow;
+                    // TODO: update job data
                 }
             }
 
@@ -99,19 +104,13 @@ namespace Plugin.Jobs
                     return false;
             }
 
-            //var profiles = Connectivity.Profiles;
-            //if (profiles.Contains(ConnectionProfile.WiFi))
-            //{
-            //    // Active Wi-Fi connection.
-            //}
+            var inetAvail = Connectivity.NetworkAccess == NetworkAccess.Internet;
+            var wifi = Connectivity.Profiles.Contains(ConnectionProfile.WiFi);
+            if (job.RequiredNetwork == NetworkType.Any && !inetAvail)
+                return false;
 
-            //var current = Connectivity.NetworkAccess;
-            //if (current == NetworkAccess.Internet)
-            //{
-            //    // Connection to internet is available
-            //}
-            var wifi = false;
-            var connected = false;
+            if (job.RequiredNetwork == NetworkType.WiFi && !wifi)
+                return false;
 
             return true;
         }

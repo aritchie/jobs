@@ -14,9 +14,15 @@ namespace Plugin.Jobs
 
 
         public static async void OnBackgroundFetch(Action<UIBackgroundFetchResult> completionHandler)
-        {
-            await Current.Run().ConfigureAwait(false);
-            completionHandler(UIBackgroundFetchResult.NewData);
-        }
+            => Current.RunTask("BackgroundTask", async () =>
+            {
+                var results = await Current.Run().ConfigureAwait(false);
+                if (results.Tasks == 0)
+                    completionHandler(UIBackgroundFetchResult.NoData);
+                else if (results.Errors > 0)
+                    completionHandler(UIBackgroundFetchResult.Failed);
+                else
+                    completionHandler(UIBackgroundFetchResult.NewData);
+            });
     }
 }

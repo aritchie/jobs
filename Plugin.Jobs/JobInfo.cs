@@ -15,6 +15,7 @@ namespace Plugin.Jobs
         public bool DeviceCharging { get; set; }
         public bool BatteryNotLow { get; set; }
         public NetworkType RequiredNetwork { get; set; } = NetworkType.None;
+        public DateTime? LastRunUtc { get; set; }
         public IDictionary<string, object> Parameters { get; set; } = new Dictionary<string, object>();
     }
 }
