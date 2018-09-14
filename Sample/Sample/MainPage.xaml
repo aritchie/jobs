@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local="clr-namespace:Sample"
+            x:Class="Sample.MainPage">
+
+    <TabbedPage.BindingContext>
+        <local:MainViewModel />
+    </TabbedPage.BindingContext>
+
+    <TabbedPage.Children>
+        <ContentPage Title="Setup">
+            <ListView ItemsSource="{Binding Commands}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding NameOfCommand}"
+                                  Command="{Binding Create}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ContentPage>
+
+        <ContentPage Title="Current Jobs">
+            <ListView ItemsSource="{Binding CurrentJobs}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Name}"
+                                  Command="{Binding ShowCommands}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ContentPage>
+
+        <ContentPage Title="Logs">
+            <ListView ItemsSource="{Binding Logs}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding CreatedOn}"
+                                  Command="{Binding ShowError}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ContentPage>
+    </TabbedPage.Children>
+</TabbedPage>

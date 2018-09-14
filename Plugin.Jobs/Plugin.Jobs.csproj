@@ -1,7 +1,69 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.52">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;MonoAndroid80;Xamarin.iOS10;uap10.0</TargetFrameworks>
+        <Authors>aritchie</Authors>
+        <Company />
+        <AssemblyName>Plugin.Jobs</AssemblyName>
+        <RootNamespace>Plugin.Jobs</RootNamespace>
+        <Description>ACR Jobs Plugin for Xamarin and Windows
+
+Supported Platforms
+* .NET Standard
+* Android 5.0+ (API 21)
+* iOS 8+
+* UWP</Description>
+        <Product>$(AssemblyName) ($(TargetFramework))</Product>
+        <PackageVersion>1.0.0</PackageVersion>
+        <RepositoryUrl>https://github.com/aritchie/jobs</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/aritchie/jobs</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/aritchie/jobs/blob/master/LICENSE.md</PackageLicenseUrl>
+        <PackageIconUrl>https://github.com/aritchie/jobs/raw/master/icon.png</PackageIconUrl>
+        <PackageReleaseNotes>https://github.com/aritchie/jobs/blob/master/docs/changelog.md</PackageReleaseNotes>
+        <PackageTags>ios android uwp windows xamarin jobs background</PackageTags>
+
+        <RepositoryType>git</RepositoryType>
+        <IncludeSymbols>True</IncludeSymbols>
+        <IncludeSource>True</IncludeSource>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DebugType>full</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugType>pdbonly</DebugType>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
+        <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
+        <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="Platforms\**\*.cs" />
+        <None Include="Platforms\**\*.cs" />
+        <PackageReference Include="Acr.Core" Version="2.2.0" />
+        <PackageReference Include="Xamarin.Essentials" Version="0.10.0-preview" />
+        <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+        <Compile Include="Platforms\Android\**\*.cs" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
+        <Compile Include="Platforms\iOS\**\*.cs" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
+        <Compile Include="Platforms\Uwp\**\*.cs" />
+    </ItemGroup>
 
 </Project>

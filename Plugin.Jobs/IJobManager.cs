@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Plugin.Jobs
+{
+    public interface IJobManager
+    {
+        // TODO: iOS doesn't have triggers like time like UWP & Android
+        // TODO: iOS will have no concept of "criteria" like android - check UWP
+
+        /// <summary>
+        /// Runs a one time task - on iOS, it will initiate a background task
+        /// </summary>
+        /// <param name="task"></param>
+        void RunTask(Func<Task> task);
+
+        /// <summary>
+        /// Flag to see if job manager is running registered tasks
+        /// </summary>
+        bool IsRunning { get; }
+
+
+        // TODO: consider returning jobs run & error count
+        /// <summary>
+        /// This force runs the manager and any registered jobs
+        /// </summary>
+        /// <returns></returns>
+        Task Run();
+
+
+        /// <summary>
+        /// Gets current registered jobs
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<JobInfo> GetJobs();
+        void Schedule(JobInfo jobInfo);
+        void Cancel(string jobName);
+        void CancelAll();
+    }
+}
