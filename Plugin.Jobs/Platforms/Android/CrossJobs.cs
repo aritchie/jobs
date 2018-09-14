@@ -5,6 +5,7 @@ using Android.OS;
 [assembly: UsesPermission(Android.Manifest.Permission.AccessNetworkState)]
 [assembly: UsesPermission(Android.Manifest.Permission.BatteryStats)]
 
+//https://developer.android.com/guide/background/
 
 namespace Plugin.Jobs
 {

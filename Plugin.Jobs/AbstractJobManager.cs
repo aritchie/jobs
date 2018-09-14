@@ -9,22 +9,27 @@ namespace Plugin.Jobs
 {
     public abstract class AbstractJobManager : IJobManager
     {
-        public virtual async void RunTask(Func<Task> task)
+        public virtual void RunTask(Func<Task> task) => this.RunTask(Guid.NewGuid().ToString(), task);
+
+        public virtual async void RunTask(string taskName, Func<Task> task)
         {
             try
             {
-                this.Log(JobState.Start);
+                this.LogTask(JobState.Start, taskName);
                 await task().ConfigureAwait(false);
-                this.Log(JobState.Finish);
+                this.LogTask(JobState.Finish, taskName);
             }
             catch (Exception ex)
             {
-                this.Log(JobState.Error, exception: ex);
+                this.LogTask(JobState.Error, taskName, ex);
             }
         }
 
 
         public virtual IEnumerable<JobInfo> GetJobs() => CrossJobs.Repository.GetJobs();
+        public virtual IEnumerable<JobLog> GetLogs(string jobName = null, DateTime? since = null, bool errorsOnly = false)
+            => CrossJobs.Repository.GetLogs(jobName, since, errorsOnly);
+
         public virtual void Cancel(string jobName) => CrossJobs.Repository.Cancel(jobName);
         public virtual void CancelAll() => CrossJobs.Repository.CancelAll();
         public bool IsRunning { get; protected set; }
@@ -37,16 +42,21 @@ namespace Plugin.Jobs
         }
 
 
-        public virtual Task Run() => Task.Run(async () =>
+        public virtual Task<JobRunResults> Run(CancellationToken? cancelToken = null) => Task.Run(async () =>
         {
             if (this.IsRunning)
-                return;
+                throw new ArgumentException("");
 
+            var ct = cancelToken ?? CancellationToken.None;
             this.IsRunning = false;
             // TODO: watch for backgrounding kill?
             // TODO: may want to allow concurrent jobs
             var cancelSrc = new CancellationTokenSource();
             var jobs = CrossJobs.Repository.GetJobs();
+
+            var runId = Guid.NewGuid().ToString();
+            var count = 0;
+            var errors = 0;
 
             foreach (var job in jobs)
             {
@@ -54,23 +64,27 @@ namespace Plugin.Jobs
                 {
                     if (this.CheckCriteria(job))
                     {
-                        this.Log(JobState.Start, job.Name);
+                        count++;
+                        this.LogJob(JobState.Start, job, runId);
                         var service = CrossJobs.Factory.GetInstance(job);
+                        var lastRun = CrossJobs.Repository.GetLastRuntime(job.Name);
 
                         await service
-                            .Run(job.Parameters, cancelSrc.Token)
+                            .Run(lastRun, job.Parameters, cancelSrc.Token)
                             .ConfigureAwait(false);
 
-                        this.Log(JobState.Finish, job.Name);
+                        this.LogJob(JobState.Finish, job, runId);
                     }
                 }
                 catch (Exception ex)
                 {
-                    this.Log(JobState.Error, job.Name, ex);
+                    errors++;
+                    this.LogJob(JobState.Error, job, runId);
                 }
             }
 
             this.IsRunning = false;
+            return new JobRunResults(count, errors);
         });
 
 
@@ -85,19 +99,45 @@ namespace Plugin.Jobs
                     return false;
             }
 
-            // TODO
+            //var profiles = Connectivity.Profiles;
+            //if (profiles.Contains(ConnectionProfile.WiFi))
+            //{
+            //    // Active Wi-Fi connection.
+            //}
+
+            //var current = Connectivity.NetworkAccess;
+            //if (current == NetworkAccess.Internet)
+            //{
+            //    // Connection to internet is available
+            //}
             var wifi = false;
             var connected = false;
 
             return true;
         }
 
-        protected virtual void Log(JobState state, string jobName = "BackgroundTask", Exception exception = null) => CrossJobs.Repository.Log(new JobLog
-        {
-            JobName = jobName,
-            CreatedOn = DateTime.UtcNow,
-            Status = state,
-            Error = exception?.ToString() ?? String.Empty
-        });
+
+        protected virtual void LogJob(JobState state,
+                                      JobInfo job,
+                                      string runId,
+                                      Exception exception = null)
+            => CrossJobs.Repository.Log(new JobLog
+            {
+                JobName = job.Name,
+                RunId = runId,
+                CreatedOn = DateTime.UtcNow,
+                Status = state,
+                Error = exception?.ToString() ?? String.Empty
+            });
+
+
+        protected virtual void LogTask(JobState state, string taskName, Exception exception = null)
+            => CrossJobs.Repository.Log(new JobLog
+            {
+                JobName = taskName,
+                CreatedOn = DateTime.UtcNow,
+                Status = state,
+                Error = exception?.ToString() ?? String.Empty
+            });
     }
 }

@@ -40,6 +40,22 @@ namespace Plugin.Jobs.Infrastructure
         }
 
 
+        public DateTime? GetLastRuntime(string jobName)
+        {
+            var dt = this.conn
+                .Logs
+                .Where(x => x.JobName == jobName)
+                .OrderByDescending(x => x.CreatedOn)
+                .Select(x => x.CreatedOn)
+                .FirstOrDefault();
+
+            if (dt == DateTime.MinValue)
+                return null;
+
+            return dt;
+        }
+
+
         // logs are left for now
         public void Cancel(string jobName) => this.conn.Delete<DbJobInfo>(jobName);
         public void CancelAll() => this.conn.DeleteAll<DbJobInfo>();

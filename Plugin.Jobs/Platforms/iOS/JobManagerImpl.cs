@@ -7,23 +7,23 @@ namespace Plugin.Jobs
 {
     public class JobManagerImpl : AbstractJobManager
     {
-        public override async void RunTask(Func<Task> task)
+        public override async void RunTask(string taskName, Func<Task> task)
         {
             var app = UIApplication.SharedApplication;
             var taskId = 0;
             try
             {
-                this.Log(JobState.Start, null);
-                taskId = (int)app.BeginBackgroundTask("BackgroundTask", () =>
+                this.LogTask(JobState.Start, taskName);
+                taskId = (int)app.BeginBackgroundTask(taskName, () =>
                 {
                     // TODO: cancelled log
                 });
                 await task().ConfigureAwait(false);
-                this.Log(JobState.Finish, null);
+                this.LogTask(JobState.Finish, taskName);
             }
             catch (Exception ex)
             {
-                this.Log(JobState.Error, exception: ex);
+                this.LogTask(JobState.Error, taskName, ex);
             }
             finally
             {

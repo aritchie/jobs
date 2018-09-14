@@ -13,8 +13,8 @@
             <ListView ItemsSource="{Binding Commands}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding NameOfCommand}"
-                                  Command="{Binding Create}" />
+                        <TextCell Text="{Binding Text}"
+                                  Command="{Binding Commands}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

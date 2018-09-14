@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Plugin.Jobs
@@ -15,6 +16,14 @@ namespace Plugin.Jobs
         /// <param name="task"></param>
         void RunTask(Func<Task> task);
 
+
+        /// <summary>
+        /// Runs a one time task - on iOS, it will initiate a background task
+        /// </summary>
+        /// <param name="taskName"></param>
+        /// <param name="task"></param>
+        void RunTask(string taskName, Func<Task> task);
+
         /// <summary>
         /// Flag to see if job manager is running registered tasks
         /// </summary>
@@ -25,8 +34,9 @@ namespace Plugin.Jobs
         /// <summary>
         /// This force runs the manager and any registered jobs
         /// </summary>
+        /// <param name="cancelToken"></param>
         /// <returns></returns>
-        Task Run();
+        Task<JobRunResults> Run(CancellationToken? cancelToken = null);
 
 
         /// <summary>
@@ -34,8 +44,35 @@ namespace Plugin.Jobs
         /// </summary>
         /// <returns></returns>
         IEnumerable<JobInfo> GetJobs();
+
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="jobName"></param>
+        /// <param name="since"></param>
+        /// <param name="errorsOnly"></param>
+        /// <returns></returns>
+        IEnumerable<JobLog> GetLogs(string jobName = null, DateTime? since = null, bool errorsOnly = false);
+
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="jobInfo"></param>
         void Schedule(JobInfo jobInfo);
+
+
+        /// <summary>
+        /// Cancel a job
+        /// </summary>
+        /// <param name="jobName"></param>
         void Cancel(string jobName);
+
+
+        /// <summary>
+        /// Cancel All Jobs
+        /// </summary>
         void CancelAll();
     }
 }
