@@ -9,6 +9,8 @@ namespace Plugin.Jobs
     {
         // TODO: iOS doesn't have triggers like time like UWP & Android
         // TODO: iOS will have no concept of "criteria" like android - check UWP
+        //event EventHandler<string, Exception> TaskFinished;
+        //event EventHandler<JobRunResults> JobBatchFinished;
 
         /// <summary>
         /// Runs a one time task - on iOS, it will initiate a background task
@@ -31,7 +33,6 @@ namespace Plugin.Jobs
         bool IsRunning { get; }
 
 
-        // TODO: consider returning jobs run & error count
         /// <summary>
         /// This force runs the manager and any registered jobs
         /// </summary>

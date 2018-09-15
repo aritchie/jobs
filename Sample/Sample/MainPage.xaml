@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:local="clr-namespace:Sample"
@@ -10,16 +10,6 @@
     </TabbedPage.BindingContext>
 
     <TabbedPage.Children>
-        <ContentPage Title="Setup">
-            <ListView ItemsSource="{Binding Commands}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding Text}"
-                                  Command="{Binding Commands}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </ContentPage>
 
         <ContentPage Title="Create">
             <Grid>
@@ -36,6 +26,9 @@
                         <EntryCell Label="Loop Count"
                                    Text="{Binding JobLoopCount}"
                                    Keyboard="Numeric" />
+                        
+                        <TextCell Text="Run As Task" 
+                                  Command="{Binding RunAsTask}" />
                     </TableSection>
 
                     <TableSection Title="Criteria">
@@ -53,29 +46,45 @@
         </ContentPage>
 
         <ContentPage Title="Jobs">
-            <ListView ItemsSource="{Binding Jobs}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding Text}"
-                                  Detail="{Binding Detail}"
-                                  Command="{Binding Command}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                
+                <ListView ItemsSource="{Binding Jobs}"
+                          IsPullToRefreshEnabled="true"
+                          RefreshCommand="{Binding LoadJobs}"
+                          Grid.Row="0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding Text}"
+                                      Detail="{Binding Detail}"
+                                      Command="{Binding Command}">
+                                <TextCell.ContextActions>
+                                    <MenuItem Text="Cancel" Command="{Binding SecondaryCommand}" IsDestructive="true" />
+                                    <MenuItem Text="Run" Command="{Binding PrimaryCommand}" />
+                                </TextCell.ContextActions>
+                            </TextCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
+                <Button Text="Run All Jobs"
+                        Command="{Binding RunAllJobs}"
+                        Grid.Row="1" />
+            </Grid>
         </ContentPage>
 
         <ContentPage Title="Logs">
             <ListView ItemsSource="{Binding Logs}"
                       IsPullToRefreshEnabled="True"
                       RefreshCommand="{Binding LoadLogs}">
-                <ListView.Behaviors>
-                    <acr:ItemTappedCommandBehavior />
-                </ListView.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding Text}"
                                   Detail="{Binding Detail}"
-                                  Command="{Binding Command}" />
+                                  Command="{Binding PrimaryCommand}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
