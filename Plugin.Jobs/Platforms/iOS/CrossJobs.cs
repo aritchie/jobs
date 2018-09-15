@@ -13,7 +13,7 @@ namespace Plugin.Jobs
         }
 
 
-        public static async void OnBackgroundFetch(Action<UIBackgroundFetchResult> completionHandler)
+        public static void OnBackgroundFetch(Action<UIBackgroundFetchResult> completionHandler)
             => Current.RunTask("BackgroundTask", async () =>
             {
                 var results = await Current.Run().ConfigureAwait(false);
