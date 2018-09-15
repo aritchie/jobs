@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using UIKit;
 
@@ -7,6 +8,19 @@ namespace Plugin.Jobs
 {
     public class JobManagerImpl : AbstractJobManager
     {
+        public override async Task Run(string jobName, CancellationToken? cancelToken = null)
+        {
+            var app = UIApplication.SharedApplication;
+            var taskId = (int)app.BeginBackgroundTask(jobName, () =>
+            {
+                // TODO: cancelled log
+            });
+            await base.Run(jobName, cancelToken);
+            app.EndBackgroundTask(taskId);
+        }
+
+
+
         public override async void RunTask(string taskName, Func<Task> task)
         {
             var app = UIApplication.SharedApplication;

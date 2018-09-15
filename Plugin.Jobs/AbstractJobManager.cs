@@ -27,6 +27,37 @@ namespace Plugin.Jobs
         }
 
 
+        public virtual async Task Run(string jobName, CancellationToken? cancelToken = null)
+        {
+            var ct = cancelToken ?? CancellationToken.None;
+            var job = CrossJobs.Repository.GetByName(jobName);
+            if (job == null)
+                throw new ArgumentException("No job found named " + jobName);
+
+            try
+            {
+                this.LogJob(JobState.Start, job, "manual");
+                var service = CrossJobs.Factory.GetInstance(job);
+
+                await service
+                    .Run(job, ct)
+                    .ConfigureAwait(false);
+
+                this.LogJob(JobState.Finish, job, "manual");
+            }
+            catch (Exception ex)
+            {
+                this.LogJob(JobState.Error, job, "manual", ex);
+                throw;
+            }
+            finally
+            {
+                job.LastRunUtc = DateTime.UtcNow;
+                CrossJobs.Repository.Update(job);
+            }
+        }
+
+
         public virtual IEnumerable<JobInfo> GetJobs() => CrossJobs.Repository.GetJobs();
         public virtual IEnumerable<JobLog> GetLogs(string jobName = null, DateTime? since = null, bool errorsOnly = false)
             => CrossJobs.Repository.GetLogs(jobName, since, errorsOnly);
@@ -46,7 +77,7 @@ namespace Plugin.Jobs
         public virtual Task<JobRunResults> Run(CancellationToken? cancelToken = null) => Task.Run(async () =>
         {
             if (this.IsRunning)
-                throw new ArgumentException("");
+                throw new ArgumentException("Job manager is already running");
 
             var ct = cancelToken ?? CancellationToken.None;
             this.IsRunning = false;
@@ -79,12 +110,12 @@ namespace Plugin.Jobs
                 catch (Exception ex)
                 {
                     errors++;
-                    this.LogJob(JobState.Error, job, runId);
+                    this.LogJob(JobState.Error, job, runId, ex);
                 }
                 finally
                 {
                     job.LastRunUtc = DateTime.UtcNow;
-                    // TODO: update job data
+                    CrossJobs.Repository.Update(job);
                 }
             }
 

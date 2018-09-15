@@ -24,6 +24,7 @@ namespace Plugin.Jobs
         /// <param name="task"></param>
         void RunTask(string taskName, Func<Task> task);
 
+
         /// <summary>
         /// Flag to see if job manager is running registered tasks
         /// </summary>
@@ -37,6 +38,15 @@ namespace Plugin.Jobs
         /// <param name="cancelToken"></param>
         /// <returns></returns>
         Task<JobRunResults> Run(CancellationToken? cancelToken = null);
+
+
+        /// <summary>
+        /// Run a specific job adhoc
+        /// </summary>
+        /// <param name="jobName"></param>
+        /// <param name="cancelToken"></param>
+        /// <returns></returns>
+        Task Run(string jobName, CancellationToken? cancelToken = null);
 
 
         /// <summary>
@@ -57,7 +67,7 @@ namespace Plugin.Jobs
 
 
         /// <summary>
-        ///
+        /// Create a new job
         /// </summary>
         /// <param name="jobInfo"></param>
         void Schedule(JobInfo jobInfo);
