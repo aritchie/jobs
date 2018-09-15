@@ -3,6 +3,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
+using Plugin.Jobs;
 using Xamarin.Forms;
 using Application = Windows.UI.Xaml.Application;
 using Frame = Windows.UI.Xaml.Controls.Frame;
@@ -29,6 +30,7 @@ namespace Sample.UWP
                 rootFrame.NavigationFailed += this.OnNavigationFailed;
 
                 Forms.Init(e);
+                CrossJobs.Init();
                 Window.Current.Content = rootFrame;
             }
 

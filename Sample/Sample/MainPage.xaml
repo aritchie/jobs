@@ -53,7 +53,7 @@
         </ContentPage>
 
         <ContentPage Title="Jobs">
-            <ListView ItemsSource="{Binding CurrentJobs}">
+            <ListView ItemsSource="{Binding Jobs}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding Text}"

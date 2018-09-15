@@ -14,10 +14,10 @@ namespace Plugin.Jobs.Infrastructure
         {
             Name = x.Name,
             Type = Type.GetType(x.TypeName),
-            RunPeriodic = x.RunPeriodic,
+            //RunPeriodic = x.RunPeriodic,
             BatteryNotLow = x.BatteryNotLow,
             DeviceCharging = x.DeviceCharging,
-            DeviceIdle = x.DeviceIdle,
+            //DeviceIdle = x.DeviceIdle,
             RequiredNetwork = (NetworkType)x.RequiredNetwork
             //Parameters = null
             //Payload = null // TODO: serialize and deserialize, I don't want a key/value table
@@ -40,6 +40,12 @@ namespace Plugin.Jobs.Infrastructure
         }
 
 
+        // TODO: yes this was lazy :)
+        public JobInfo GetByName(string jobName) => this
+            .GetJobs()
+            .FirstOrDefault(x => x.Name.Equals(jobName, StringComparison.CurrentCultureIgnoreCase));
+
+
         // logs are left for now
         public void Cancel(string jobName) => this.conn.Delete<DbJobInfo>(jobName);
         public void CancelAll() => this.conn.DeleteAll<DbJobInfo>();
@@ -49,13 +55,19 @@ namespace Plugin.Jobs.Infrastructure
         {
             Name = jobInfo.Name,
             TypeName = jobInfo.Type.FullName,
-            RunPeriodic = jobInfo.RunPeriodic,
+            //RunPeriodic = jobInfo.RunPeriodic,
             BatteryNotLow = jobInfo.BatteryNotLow,
             DeviceCharging = jobInfo.DeviceCharging,
-            DeviceIdle = jobInfo.DeviceIdle,
+            //DeviceIdle = jobInfo.DeviceIdle,
             RequiredNetwork = (int)jobInfo.RequiredNetwork,
             Payload = null // TODO: serialize and deserialize, I don't want a key/value table
         });
+
+
+        public void Update(JobInfo jobInfo)
+        {
+
+        }
 
 
         public void Log(JobLog log) => this.conn.Insert(new DbJobLog
@@ -65,5 +77,9 @@ namespace Plugin.Jobs.Infrastructure
             JobName = log.JobName,
             Error = log.Error
         });
+
+
+        //IDictionary<string, object> Deserialize(string payload);
+        //void Serialize(IDictionary<string, object> dict);
     }
 }

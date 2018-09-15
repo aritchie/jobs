@@ -12,6 +12,7 @@ namespace Plugin.Jobs
 
         // TODO: not sure what to do with these?
         // TODO: next run time? Date/Time or TimeSpan
+        // TODO: priority?
         //public bool RunPeriodic { get; set; }
         //public bool DeviceIdle { get; set; } // this will only work on droid
 
