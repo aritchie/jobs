@@ -2,6 +2,7 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:local="clr-namespace:Sample"
+            xmlns:acr="clr-namespace:Acr.XamForms.Behaviors;assembly=Acr.XamForms"
             x:Class="Sample.MainPage">
 
     <TabbedPage.BindingContext>
@@ -20,23 +21,61 @@
             </ListView>
         </ContentPage>
 
-        <ContentPage Title="Current Jobs">
+        <ContentPage Title="Create">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TableView Intent="Form" Grid.Row="0">
+                    <TableSection>
+                        <EntryCell Label="Job Name"
+                                   Text="{Binding JobName}" />
+
+                        <EntryCell Label="Loop Count"
+                                   Text="{Binding JobLoopCount}"
+                                   Keyboard="Numeric" />
+                    </TableSection>
+
+                    <TableSection Title="Criteria">
+                        <SwitchCell Text="Has Internet" On="{Binding HasInternet}" />
+                        <SwitchCell Text="Has WiFi" On="{Binding HasWiFi}" />
+                        <SwitchCell Text="Battery Not Low" On="{Binding BatteryNotLow}" />
+                        <SwitchCell Text="Device Charging" On="{Binding DeviceCharging}" />
+                    </TableSection>
+                </TableView>
+
+                <Button Text="Create Job"
+                        Command="{Binding CreateJob}"
+                        Grid.Row="1" />
+            </Grid>
+        </ContentPage>
+
+        <ContentPage Title="Jobs">
             <ListView ItemsSource="{Binding CurrentJobs}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Name}"
-                                  Command="{Binding ShowCommands}" />
+                        <TextCell Text="{Binding Text}"
+                                  Detail="{Binding Detail}"
+                                  Command="{Binding Command}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </ContentPage>
 
         <ContentPage Title="Logs">
-            <ListView ItemsSource="{Binding Logs}">
+            <ListView ItemsSource="{Binding Logs}"
+                      IsPullToRefreshEnabled="True"
+                      RefreshCommand="{Binding LoadLogs}">
+                <ListView.Behaviors>
+                    <acr:ItemTappedCommandBehavior />
+                </ListView.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding CreatedOn}"
-                                  Command="{Binding ShowError}" />
+                        <TextCell Text="{Binding Text}"
+                                  Detail="{Binding Detail}"
+                                  Command="{Binding Command}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
