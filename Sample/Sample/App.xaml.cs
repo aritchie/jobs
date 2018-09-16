@@ -12,6 +12,7 @@ namespace Sample
         public App()
         {
             this.InitializeComponent();
+            GlobalExceptionHandler.Register();
             this.MainPage = new NavigationPage(new MainPage());
         }
     }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace Plugin.Jobs
 {
-
     public class JobInfo
     {
         public string Name { get; set; }

@@ -14,12 +14,12 @@ namespace Plugin.Jobs.Infrastructure
         {
             Name = x.Name,
             Type = Type.GetType(x.TypeName),
+            LastRunUtc = x.LastRunUtc,
             //RunPeriodic = x.RunPeriodic,
+            //DeviceIdle = x.DeviceIdle,
             BatteryNotLow = x.BatteryNotLow,
             DeviceCharging = x.DeviceCharging,
-            //DeviceIdle = x.DeviceIdle,
-            RequiredNetwork = (NetworkType)x.RequiredNetwork
-            //Parameters = null
+            RequiredNetwork = (NetworkType)x.RequiredNetwork,
             //Payload = null // TODO: serialize and deserialize, I don't want a key/value table
         });
 
@@ -54,7 +54,7 @@ namespace Plugin.Jobs.Infrastructure
         public void Create(JobInfo jobInfo) => this.conn.Insert(new DbJobInfo
         {
             Name = jobInfo.Name,
-            TypeName = jobInfo.Type.FullName,
+            TypeName = jobInfo.Type.AssemblyQualifiedName,
             //RunPeriodic = jobInfo.RunPeriodic,
             BatteryNotLow = jobInfo.BatteryNotLow,
             DeviceCharging = jobInfo.DeviceCharging,

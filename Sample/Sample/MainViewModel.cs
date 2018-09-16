@@ -8,6 +8,7 @@ using Acr.UserDialogs;
 using Plugin.Jobs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Sample.Jobs;
 
 
 namespace Sample
@@ -37,6 +38,7 @@ namespace Sample
                     CrossJobs.Current.Schedule(new JobInfo
                     {
                         Name = this.JobName.Trim(),
+                        Type = typeof(SampleJob),
                         BatteryNotLow = this.BatteryNotLow,
                         DeviceCharging = this.DeviceCharging,
                         // TODO: NetworkType
@@ -46,6 +48,7 @@ namespace Sample
                         }
                     });
                     this.LoadJobs.Execute(null);
+                    this.dialogs.Toast("Job Created");
                 },
                 valObs
             );

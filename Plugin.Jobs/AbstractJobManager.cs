@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -69,7 +70,19 @@ namespace Plugin.Jobs
 
         public virtual void Schedule(JobInfo jobInfo)
         {
-            // TODO: validate stuff
+            if (String.IsNullOrWhiteSpace(jobInfo.Name))
+                throw new ArgumentException("No job name defined");
+
+            if (jobInfo.Type == null)
+                throw new ArgumentException("Type not set");
+
+            //if (!jobInfo.Type.GetTypeInfo().IsAssignableFrom(typeof(IJob)))
+            //    throw new ArgumentException($"{jobInfo.Type.FullName} is not an implementation of {typeof(IJob).Name}");
+
+            var existing = CrossJobs.Repository.GetByName(jobInfo.Name);
+            if (existing != null)
+                throw new ArgumentException($"A job with the name '{jobInfo.Name}' already exists");
+
             CrossJobs.Repository.Create(jobInfo);
         }
 

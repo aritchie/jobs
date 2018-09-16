@@ -10,7 +10,8 @@ namespace Sample.Jobs
     {
         public async Task<bool> Run(JobInfo jobInfo, CancellationToken cancelToken)
         {
-            var loops = (int)jobInfo.Parameters["LoopCount"];
+            //var loops = (int)jobInfo.Parameters["LoopCount"];
+            var loops = 25;
 
             for (var i = 0; i < loops; i++)
             {
