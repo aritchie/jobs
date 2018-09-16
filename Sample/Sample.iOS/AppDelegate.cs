@@ -13,9 +13,9 @@ namespace Sample.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            CrossJobs.Init();
             Forms.Init();
             this.LoadApplication(new App());
-            CrossJobs.Init();
 
             return base.FinishedLaunching(app, options);
         }

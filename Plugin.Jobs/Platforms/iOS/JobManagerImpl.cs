@@ -20,7 +20,6 @@ namespace Plugin.Jobs
         }
 
 
-
         public override async void RunTask(string taskName, Func<Task> task)
         {
             var app = UIApplication.SharedApplication;

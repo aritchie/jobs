@@ -3,7 +3,8 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:local="clr-namespace:Sample"
             xmlns:acr="clr-namespace:Acr.XamForms.Behaviors;assembly=Acr.XamForms"
-            x:Class="Sample.MainPage">
+            x:Class="Sample.MainPage"
+            Title="Jobs Sample">
 
     <TabbedPage.BindingContext>
         <local:MainViewModel />
@@ -26,8 +27,8 @@
                         <EntryCell Label="Loop Count"
                                    Text="{Binding JobLoopCount}"
                                    Keyboard="Numeric" />
-                        
-                        <TextCell Text="Run As Task" 
+
+                        <TextCell Text="Run As Task"
                                   Command="{Binding RunAsTask}" />
                     </TableSection>
 
@@ -51,9 +52,10 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                
+
                 <ListView ItemsSource="{Binding Jobs}"
                           IsPullToRefreshEnabled="true"
+                          IsRefreshing="{Binding IsBusy}"
                           RefreshCommand="{Binding LoadJobs}"
                           Grid.Row="0">
                     <ListView.ItemTemplate>
@@ -69,7 +71,7 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                
+
                 <Button Text="Run All Jobs"
                         Command="{Binding RunAllJobs}"
                         Grid.Row="1" />
@@ -79,6 +81,7 @@
         <ContentPage Title="Logs">
             <ListView ItemsSource="{Binding Logs}"
                       IsPullToRefreshEnabled="True"
+                      IsRefreshing="{Binding IsBusy}"
                       RefreshCommand="{Binding LoadLogs}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
