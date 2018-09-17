@@ -35,13 +35,10 @@ namespace Plugin.Jobs.Infrastructure
         public string TypeName { get; set; }
 
         public DateTime? LastRunUtc { get; set; }
-        //public bool RunPeriodic { get; set; }
-        //public bool DeviceIdle { get; set; } // this will only work on droid
         public bool DeviceCharging { get; set; }
         public bool BatteryNotLow { get; set; }
         public int RequiredNetwork { get; set; }
         public string Payload { get; set; }
-        //public IDictionary<string, object> Parameters { get; set; } = new Dictionary<string, object>();
     }
 
 

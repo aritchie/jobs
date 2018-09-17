@@ -4,7 +4,6 @@ using Android.App.Job;
 using Android.Content;
 using Android.OS;
 using Java.Lang;
-using Plugin.Jobs.Platforms.Android;
 
 [assembly: UsesPermission("android.permission.BIND_JOB_SERVICE")]
 [assembly: UsesPermission("android.permission.RECEIVE_BOOT_COMPLETED")]

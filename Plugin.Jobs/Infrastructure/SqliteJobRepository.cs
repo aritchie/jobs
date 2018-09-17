@@ -20,7 +20,7 @@ namespace Plugin.Jobs.Infrastructure
             BatteryNotLow = x.BatteryNotLow,
             DeviceCharging = x.DeviceCharging,
             RequiredNetwork = (NetworkType)x.RequiredNetwork,
-            //Payload = null // TODO: serialize and deserialize, I don't want a key/value table
+            Parameters = this.FromPayload(x.Payload)
         });
 
 
@@ -55,18 +55,16 @@ namespace Plugin.Jobs.Infrastructure
         {
             Name = jobInfo.Name,
             TypeName = jobInfo.Type.AssemblyQualifiedName,
-            //RunPeriodic = jobInfo.RunPeriodic,
             BatteryNotLow = jobInfo.BatteryNotLow,
             DeviceCharging = jobInfo.DeviceCharging,
-            //DeviceIdle = jobInfo.DeviceIdle,
             RequiredNetwork = (int)jobInfo.RequiredNetwork,
-            Payload = null // TODO: serialize and deserialize, I don't want a key/value table
+            Payload = this.ToPayload(jobInfo.Parameters)
         });
 
 
         public void Update(JobInfo jobInfo)
         {
-
+            // TODO
         }
 
 
@@ -79,7 +77,33 @@ namespace Plugin.Jobs.Infrastructure
         });
 
 
-        //IDictionary<string, object> Deserialize(string payload);
-        //void Serialize(IDictionary<string, object> dict);
+        protected virtual IJobParameters FromPayload(string payload)
+        {
+            var dict = new Dictionary<string, string>();
+            if (!String.IsNullOrWhiteSpace(payload))
+            {
+                var pairs = payload.Split(';');
+                foreach (var pair in pairs)
+                {
+                    var keyValue = pair.Split(':');
+                    if (keyValue.Length > 0)
+                        dict.Add(keyValue[0], keyValue[1]);
+                }
+            }
+            return new JobParameters(dict);
+        }
+
+
+        protected virtual string ToPayload(IJobParameters parameters)
+        {
+            var s = "";
+            foreach (var key in parameters.Keys)
+            {
+                var value = parameters.Get(key, "");
+                s += $"{key}:{value};";
+            }
+            s = s.TrimEnd(';');
+            return s;
+        }
     }
 }

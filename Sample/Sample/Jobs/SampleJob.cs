@@ -10,15 +10,14 @@ namespace Sample.Jobs
     {
         public async Task<bool> Run(JobInfo jobInfo, CancellationToken cancelToken)
         {
-            //var loops = (int)jobInfo.Parameters["LoopCount"];
-            var loops = 25;
+            var loops = jobInfo.Parameters.Get("LoopCount", 25);
 
             for (var i = 0; i < loops; i++)
             {
                 if (cancelToken.IsCancellationRequested)
                     break;
 
-                await Task.Delay(1000).ConfigureAwait(false);
+                await Task.Delay(1000, cancelToken).ConfigureAwait(false);
             }
 
             return true;

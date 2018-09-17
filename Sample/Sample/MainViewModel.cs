@@ -35,18 +35,17 @@ namespace Sample
             this.CreateJob = ReactiveCommand.Create(
                 () =>
                 {
-                    CrossJobs.Current.Schedule(new JobInfo
+                    var job = new JobInfo
                     {
                         Name = this.JobName.Trim(),
                         Type = typeof(SampleJob),
                         BatteryNotLow = this.BatteryNotLow,
-                        DeviceCharging = this.DeviceCharging,
+                        DeviceCharging = this.DeviceCharging
                         // TODO: NetworkType
-                        Parameters = new Dictionary<string, object>
-                        {
-                            { "LoopCount", this.JobLoopCount }
-                        }
-                    });
+                    };
+                    job.Parameters.Set("LoopCount", this.JobLoopCount);
+                    CrossJobs.Current.Schedule(job);
+
                     this.LoadJobs.Execute(null);
                     this.dialogs.Toast("Job Created");
                 },

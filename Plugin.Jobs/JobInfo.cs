@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using Plugin.Jobs.Infrastructure;
 
 
 namespace Plugin.Jobs
@@ -9,7 +9,6 @@ namespace Plugin.Jobs
         public string Name { get; set; }
         public Type Type { get; set; }
 
-        // TODO: not sure what to do with these?
         // TODO: next run time? Date/Time or TimeSpan
         // TODO: priority?
         //public bool RunPeriodic { get; set; }
@@ -19,6 +18,6 @@ namespace Plugin.Jobs
         public bool BatteryNotLow { get; set; }
         public NetworkType RequiredNetwork { get; set; } = NetworkType.None;
         public DateTime? LastRunUtc { get; set; }
-        public IDictionary<string, object> Parameters { get; set; } = new Dictionary<string, object>();
+        public IJobParameters Parameters { get; set; } = new JobParameters();
     }
 }
