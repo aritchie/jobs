@@ -64,7 +64,11 @@ namespace Plugin.Jobs.Infrastructure
 
         public void Update(JobInfo jobInfo)
         {
+            var dbJob = this.conn.Get<DbJobInfo>(jobInfo.Name);
+            dbJob.LastRunUtc = jobInfo.LastRunUtc;
+
             // TODO
+            this.conn.Update(dbJob);
         }
 
 
