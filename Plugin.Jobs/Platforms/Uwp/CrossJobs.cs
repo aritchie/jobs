@@ -22,7 +22,7 @@ namespace Plugin.Jobs
             //builder.SetTrigger(new GattServiceProviderTrigger());
             //builder.SetTrigger(new GeovisitTrigger());
             //builder.SetTrigger(new ToastNotificationActionTrigger());
-            builder.SetTrigger(new TimeTrigger(0, false));
+            builder.SetTrigger(new TimeTrigger(10, false));
             builder.Register();
         }
     }

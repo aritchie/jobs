@@ -137,6 +137,9 @@ var logs = CrossJobs.Current.GetLogs(
     DateTime.Yesterday, // all logs since this date/time (UTC based)
     errorsOnly // boolean to review logs that errored only
 )
+
+// Plugging in custom job factory
+TODO
 ```
 
 ## FAQ
