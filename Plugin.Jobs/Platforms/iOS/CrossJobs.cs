@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UIKit;
 
 
@@ -17,9 +18,9 @@ namespace Plugin.Jobs
             => Current.RunTask("BackgroundTask", async () =>
             {
                 var results = await Current.Run().ConfigureAwait(false);
-                if (results.Tasks == 0)
+                if (!results.Any())
                     completionHandler(UIBackgroundFetchResult.NoData);
-                else if (results.Errors > 0)
+                else if (results.Any(x => !x.Success))
                     completionHandler(UIBackgroundFetchResult.Failed);
                 else
                     completionHandler(UIBackgroundFetchResult.NewData);

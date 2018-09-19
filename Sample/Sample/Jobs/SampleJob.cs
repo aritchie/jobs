@@ -8,7 +8,7 @@ namespace Sample.Jobs
 {
     public class SampleJob : IJob
     {
-        public async Task<bool> Run(JobInfo jobInfo, CancellationToken cancelToken)
+        public async Task Run(JobInfo jobInfo, CancellationToken cancelToken)
         {
             var loops = jobInfo.Parameters.Get("LoopCount", 25);
 
@@ -19,8 +19,6 @@ namespace Sample.Jobs
 
                 await Task.Delay(1000, cancelToken).ConfigureAwait(false);
             }
-
-            return true;
         }
     }
 }

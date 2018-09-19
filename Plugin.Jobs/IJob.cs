@@ -12,7 +12,6 @@ namespace Plugin.Jobs
         /// </summary>
         /// <param name="jobInfo"></param>
         /// <param name="cancelToken"></param>
-        /// <returns>Return true to run next wave, return false to cancel job</returns>
-        Task<bool> Run(JobInfo jobInfo, CancellationToken cancelToken);
+        Task Run(JobInfo jobInfo, CancellationToken cancelToken);
     }
 }

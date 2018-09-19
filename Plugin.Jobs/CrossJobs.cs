@@ -1,5 +1,4 @@
 ﻿using System;
-using Plugin.Jobs.Infrastructure;
 
 
 namespace Plugin.Jobs
@@ -18,9 +17,5 @@ namespace Plugin.Jobs
             }
             set => current = value;
         }
-
-
-        public static IJobRepository Repository { get; set; } = new SqliteJobRepository();
-        public static IJobFactory Factory { get; set; } = new ReflectionJobFactory();
     }
 }

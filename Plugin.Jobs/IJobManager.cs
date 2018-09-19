@@ -9,18 +9,9 @@ namespace Plugin.Jobs
     {
         // TODO: iOS doesn't have triggers like time like UWP & Android
         // TODO: iOS will have no concept of "criteria" like android - check UWP
-        //event EventHandler<string, Exception> TaskFinished;
-        //event EventHandler<JobRunResults> JobBatchFinished;
 
         /// <summary>
-        /// Runs a one time task - on iOS, it will initiate a background task
-        /// </summary>
-        /// <param name="task"></param>
-        void RunTask(Func<Task> task);
-
-
-        /// <summary>
-        /// Runs a one time task - on iOS, it will initiate a background task
+        /// Runs a one time, adhoc task - on iOS, it will initiate a background task
         /// </summary>
         /// <param name="taskName"></param>
         /// <param name="task"></param>
@@ -34,11 +25,17 @@ namespace Plugin.Jobs
 
 
         /// <summary>
+        /// Fires as each job finishes
+        /// </summary>
+        event EventHandler<JobRunResult> JobFinished;
+
+
+        /// <summary>
         /// This force runs the manager and any registered jobs
         /// </summary>
         /// <param name="cancelToken"></param>
         /// <returns></returns>
-        Task<JobRunResults> Run(CancellationToken? cancelToken = null);
+        Task<IEnumerable<JobRunResult>> Run(CancellationToken? cancelToken = null);
 
 
         /// <summary>
@@ -47,7 +44,7 @@ namespace Plugin.Jobs
         /// <param name="jobName"></param>
         /// <param name="cancelToken"></param>
         /// <returns></returns>
-        Task Run(string jobName, CancellationToken? cancelToken = null);
+        Task<JobRunResult> Run(string jobName, CancellationToken? cancelToken = null);
 
 
         /// <summary>

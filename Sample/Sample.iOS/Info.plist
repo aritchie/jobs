@@ -23,7 +23,7 @@
 	<key>MinimumOSVersion</key>
 	<string>8.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>Sample</string>
+	<string>Job Plugin Sample</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.acrapps.jobssample</string>
 	<key>CFBundleVersion</key>

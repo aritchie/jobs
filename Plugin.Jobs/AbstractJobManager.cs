@@ -11,8 +11,6 @@ namespace Plugin.Jobs
 {
     public abstract class AbstractJobManager : IJobManager
     {
-        public virtual void RunTask(Func<Task> task) => this.RunTask(Guid.NewGuid().ToString(), task);
-
         public virtual async void RunTask(string taskName, Func<Task> task)
         {
             try
@@ -28,44 +26,26 @@ namespace Plugin.Jobs
         }
 
 
-        public virtual async Task Run(string jobName, CancellationToken? cancelToken = null)
+        public virtual async Task<JobRunResult> Run(string jobName, CancellationToken? cancelToken = null)
         {
-            var ct = cancelToken ?? CancellationToken.None;
-            var job = CrossJobs.Repository.GetByName(jobName);
+
+            var job = JobServices.Repository.GetByName(jobName);
             if (job == null)
                 throw new ArgumentException("No job found named " + jobName);
 
-            try
-            {
-                this.LogJob(JobState.Start, job, "manual");
-                var service = CrossJobs.Factory.GetInstance(job);
-
-                await service
-                    .Run(job, ct)
-                    .ConfigureAwait(false);
-
-                this.LogJob(JobState.Finish, job, "manual");
-            }
-            catch (Exception ex)
-            {
-                this.LogJob(JobState.Error, job, "manual", ex);
-                throw;
-            }
-            finally
-            {
-                job.LastRunUtc = DateTime.UtcNow;
-                CrossJobs.Repository.Update(job);
-            }
+            var result = await this.RunJob(job, "manual", cancelToken).ConfigureAwait(false);
+            return result;
         }
 
 
-        public virtual IEnumerable<JobInfo> GetJobs() => CrossJobs.Repository.GetJobs();
+        public virtual IEnumerable<JobInfo> GetJobs() => JobServices.Repository.GetJobs();
         public virtual IEnumerable<JobLog> GetLogs(string jobName = null, DateTime? since = null, bool errorsOnly = false)
-            => CrossJobs.Repository.GetLogs(jobName, since, errorsOnly);
+            => JobServices.Repository.GetLogs(jobName, since, errorsOnly);
 
-        public virtual void Cancel(string jobName) => CrossJobs.Repository.Cancel(jobName);
-        public virtual void CancelAll() => CrossJobs.Repository.CancelAll();
+        public virtual void Cancel(string jobName) => JobServices.Repository.Cancel(jobName);
+        public virtual void CancelAll() => JobServices.Repository.CancelAll();
         public bool IsRunning { get; protected set; }
+        public event EventHandler<JobRunResult> JobFinished;
 
 
         public virtual void Schedule(JobInfo jobInfo)
@@ -79,15 +59,15 @@ namespace Plugin.Jobs
             //if (!jobInfo.Type.GetTypeInfo().IsAssignableFrom(typeof(IJob)))
             //    throw new ArgumentException($"{jobInfo.Type.FullName} is not an implementation of {typeof(IJob).Name}");
 
-            var existing = CrossJobs.Repository.GetByName(jobInfo.Name);
+            var existing = JobServices.Repository.GetByName(jobInfo.Name);
             if (existing != null)
                 throw new ArgumentException($"A job with the name '{jobInfo.Name}' already exists");
 
-            CrossJobs.Repository.Create(jobInfo);
+            JobServices.Repository.Create(jobInfo);
         }
 
 
-        public virtual Task<JobRunResults> Run(CancellationToken? cancelToken = null) => Task.Run(async () =>
+        public virtual Task<IEnumerable<JobRunResult>> Run(CancellationToken? cancelToken = null) => Task.Run(async () =>
         {
             if (this.IsRunning)
                 throw new ArgumentException("Job manager is already running");
@@ -97,43 +77,21 @@ namespace Plugin.Jobs
             // TODO: watch for backgrounding kill?
             // TODO: may want to allow concurrent jobs
             var cancelSrc = new CancellationTokenSource();
-            var jobs = CrossJobs.Repository.GetJobs();
-
+            var jobs = JobServices.Repository.GetJobs();
             var runId = Guid.NewGuid().ToString();
-            var count = 0;
-            var errors = 0;
+            var list = new List<JobRunResult>();
 
             foreach (var job in jobs)
             {
-                try
+                if (this.CheckCriteria(job))
                 {
-                    if (this.CheckCriteria(job))
-                    {
-                        count++;
-                        this.LogJob(JobState.Start, job, runId);
-                        var service = CrossJobs.Factory.GetInstance(job);
-
-                        await service
-                            .Run(job, cancelSrc.Token)
-                            .ConfigureAwait(false);
-
-                        this.LogJob(JobState.Finish, job, runId);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    errors++;
-                    this.LogJob(JobState.Error, job, runId, ex);
-                }
-                finally
-                {
-                    job.LastRunUtc = DateTime.UtcNow;
-                    CrossJobs.Repository.Update(job);
+                    var result = await this.RunJob(job, "", ct).ConfigureAwait(false);
+                    list.Add(result);
                 }
             }
 
             this.IsRunning = false;
-            return new JobRunResults(count, errors);
+            return (IEnumerable<JobRunResult>)list;
         });
 
 
@@ -160,11 +118,42 @@ namespace Plugin.Jobs
         }
 
 
+        protected virtual async Task<JobRunResult> RunJob(JobInfo job, string batchName, CancellationToken? cancelToken)
+        {
+            var ct = cancelToken ?? CancellationToken.None;
+            var result = default(JobRunResult);
+            try
+            {
+                this.LogJob(JobState.Start, job, "manual");
+                var service = JobServices.Factory.GetInstance(job);
+
+                await service
+                    .Run(job, ct)
+                    .ConfigureAwait(false);
+
+                this.LogJob(JobState.Finish, job, "manual");
+                result = new JobRunResult(job, null);
+
+            }
+            catch (Exception ex)
+            {
+                this.LogJob(JobState.Error, job, "manual", ex);
+                result = new JobRunResult(job, ex);
+            }
+            finally
+            {
+                job.LastRunUtc = DateTime.UtcNow;
+                JobServices.Repository.Update(job);
+            }
+            this.JobFinished?.Invoke(this, result);
+            return result;
+        }
+
         protected virtual void LogJob(JobState state,
                                       JobInfo job,
                                       string runId,
                                       Exception exception = null)
-            => CrossJobs.Repository.Log(new JobLog
+            => JobServices.Repository.Log(new JobLog
             {
                 JobName = job.Name,
                 RunId = runId,
@@ -175,7 +164,7 @@ namespace Plugin.Jobs
 
 
         protected virtual void LogTask(JobState state, string taskName, Exception exception = null)
-            => CrossJobs.Repository.Log(new JobLog
+            => JobServices.Repository.Log(new JobLog
             {
                 JobName = taskName,
                 CreatedOn = DateTime.UtcNow,

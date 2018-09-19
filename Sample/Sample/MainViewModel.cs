@@ -40,8 +40,8 @@ namespace Sample
                         Name = this.JobName.Trim(),
                         Type = typeof(SampleJob),
                         BatteryNotLow = this.BatteryNotLow,
-                        DeviceCharging = this.DeviceCharging
-                        // TODO: NetworkType
+                        DeviceCharging = this.DeviceCharging,
+                        RequiredNetwork = (NetworkType)Enum.Parse(typeof(NetworkType), this.NetworkType)
                     };
                     job.Parameters.Set("LoopCount", this.JobLoopCount);
                     CrossJobs.Current.Schedule(job);
@@ -53,28 +53,46 @@ namespace Sample
             );
 
             this.RunAsTask = ReactiveCommand.Create(
-                () =>
+                () => this.jobManager.RunTask(this.JobName, async () =>
                 {
-                    // TODO: need to get a var that tells me this is running/finished
-                    this.jobManager.RunTask(async () =>
+                    this.dialogs.Toast("Task Started");
+                    for (var i = 0; i < this.JobLoopCount; i++)
                     {
-                        this.dialogs.Toast("Task Started");
-                        for (var i = 0; i < this.JobLoopCount; i++)
-                        {
-                            await Task.Delay(1000).ConfigureAwait(false);
-                        }
-                        this.dialogs.Toast("Task Finished");
-                    });
-                },
+                        await Task.Delay(1000).ConfigureAwait(false);
+                    }
+                    this.dialogs.Toast("Task Finished");
+                }),
                 valObs
             );
+
+            this.ChangeNetworkType = ReactiveCommand.Create(() =>
+            {
+                var cfg = new ActionSheetConfig()
+                    .Add(
+                        Plugin.Jobs.NetworkType.None.ToString(),
+                        () => this.NetworkType = Plugin.Jobs.NetworkType.None.ToString()
+                    )
+                    .Add(
+                        Plugin.Jobs.NetworkType.Any.ToString(),
+                        () => this.NetworkType = Plugin.Jobs.NetworkType.Any.ToString()
+                    )
+                    .Add(
+                        Plugin.Jobs.NetworkType.WiFi.ToString(),
+                        () => this.NetworkType = Plugin.Jobs.NetworkType.WiFi.ToString()
+                    )
+                    .SetCancel();
+                this.dialogs.ActionSheet(cfg);
+            });
 
             this.RunAllJobs = ReactiveCommand.Create(() =>
             {
                 if (this.jobManager.IsRunning)
                     this.dialogs.Alert("Job Manager is already running");
                 else
+                {
+                    this.dialogs.Toast("Job Batch Started");
                     this.jobManager.Run();
+                }
             });
 
             this.CancelAllJobs = ReactiveCommand.Create(() =>
@@ -143,11 +161,14 @@ namespace Sample
         {
             this.LoadJobs.Execute(null);
             this.LoadLogs.Execute(null);
+
+            CrossJobs.Current.JobFinished += this.OnJobFinished;
         }
 
 
         public void OnDisappearing()
         {
+            CrossJobs.Current.JobFinished -= this.OnJobFinished;
         }
 
 
@@ -157,15 +178,27 @@ namespace Sample
         public ICommand CreateJob { get; }
         public ICommand RunAsTask { get; }
         public ICommand RunAllJobs { get; }
+        public ICommand ChangeNetworkType { get; }
 
         public List<CommandItem> Jobs { get; private set; }
         public List<CommandItem> Logs { get; private set; }
         [Reactive] public string JobName { get; set; } = "TestJob";
         [Reactive] public int JobLoopCount { get; set; } = 10;
-        [Reactive] public bool HasInternet { get; set; }
-        [Reactive] public bool HasWiFi { get; set; }
+        [Reactive] public string NetworkType { get; set; } = Plugin.Jobs.NetworkType.None.ToString();
         [Reactive] public bool BatteryNotLow { get; set; }
         [Reactive] public bool DeviceCharging { get; set; }
         [Reactive] public bool IsBusy { get; set; }
+
+
+        void OnJobFinished(object sender, JobRunResult args)
+        {
+            if (args.Success)
+                this.dialogs.Toast($"Job {args.Job.Name} Finished");
+            else
+                this.dialogs.Alert(args.Exception.ToString(), $"Job {args.Job.Name} Failed");
+
+            this.LoadLogs.Execute(null);
+            this.LoadJobs.Execute(null);
+        }
     }
 }

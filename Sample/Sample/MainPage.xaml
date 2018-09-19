@@ -33,8 +33,9 @@
                     </TableSection>
 
                     <TableSection Title="Criteria">
-                        <SwitchCell Text="Has Internet" On="{Binding HasInternet}" />
-                        <SwitchCell Text="Has WiFi" On="{Binding HasWiFi}" />
+                        <TextCell Text="Network"
+                                  Detail="{Binding NetworkType}"
+                                  Command="{Binding ChangeNetworkType}" />
                         <SwitchCell Text="Battery Not Low" On="{Binding BatteryNotLow}" />
                         <SwitchCell Text="Device Charging" On="{Binding DeviceCharging}" />
                     </TableSection>
