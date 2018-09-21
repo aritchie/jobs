@@ -32,8 +32,8 @@ namespace Sample
                     loops.GetValue() >= 10
             );
 
-            this.CreateJob = ReactiveCommand.Create(
-                () =>
+            this.CreateJob = ReactiveCommand.CreateFromTask(
+                async _ =>
                 {
                     var job = new JobInfo
                     {
@@ -44,7 +44,7 @@ namespace Sample
                         RequiredNetwork = (NetworkType)Enum.Parse(typeof(NetworkType), this.NetworkType)
                     };
                     job.Parameters.Set("LoopCount", this.JobLoopCount);
-                    CrossJobs.Current.Schedule(job);
+                    await CrossJobs.Current.Schedule(job);
 
                     this.LoadJobs.Execute(null);
                     this.dialogs.Toast("Job Created");
@@ -91,7 +91,7 @@ namespace Sample
                 else
                 {
                     this.dialogs.Toast("Job Batch Started");
-                    this.jobManager.Run();
+                    this.jobManager.RunAll();
                 }
             });
 

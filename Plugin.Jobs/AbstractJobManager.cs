@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Plugin.Jobs.Infrastructure;
 using Xamarin.Essentials;
 
 
@@ -28,7 +29,6 @@ namespace Plugin.Jobs
 
         public virtual async Task<JobRunResult> Run(string jobName, CancellationToken? cancelToken = null)
         {
-
             var job = JobServices.Repository.GetByName(jobName);
             if (job == null)
                 throw new ArgumentException("No job found named " + jobName);
@@ -42,13 +42,14 @@ namespace Plugin.Jobs
         public virtual IEnumerable<JobLog> GetLogs(string jobName = null, DateTime? since = null, bool errorsOnly = false)
             => JobServices.Repository.GetLogs(jobName, since, errorsOnly);
 
+
         public virtual void Cancel(string jobName) => JobServices.Repository.Cancel(jobName);
         public virtual void CancelAll() => JobServices.Repository.CancelAll();
         public bool IsRunning { get; protected set; }
         public event EventHandler<JobRunResult> JobFinished;
 
 
-        public virtual void Schedule(JobInfo jobInfo)
+        public virtual Task Schedule(JobInfo jobInfo)
         {
             if (String.IsNullOrWhiteSpace(jobInfo.Name))
                 throw new ArgumentException("No job name defined");
@@ -64,19 +65,17 @@ namespace Plugin.Jobs
                 throw new ArgumentException($"A job with the name '{jobInfo.Name}' already exists");
 
             JobServices.Repository.Create(jobInfo);
+            return Task.CompletedTask;
         }
 
 
-        public virtual Task<IEnumerable<JobRunResult>> Run(CancellationToken? cancelToken = null) => Task.Run(async () =>
+        public virtual Task<IEnumerable<JobRunResult>> RunAll(CancellationToken? cancelToken = null) => Task.Run(async () =>
         {
             if (this.IsRunning)
                 throw new ArgumentException("Job manager is already running");
 
             var ct = cancelToken ?? CancellationToken.None;
             this.IsRunning = false;
-            // TODO: watch for backgrounding kill?
-            // TODO: may want to allow concurrent jobs
-            var cancelSrc = new CancellationTokenSource();
             var jobs = JobServices.Repository.GetJobs();
             var runId = Guid.NewGuid().ToString();
             var list = new List<JobRunResult>();
@@ -133,7 +132,6 @@ namespace Plugin.Jobs
 
                 this.LogJob(JobState.Finish, job, "manual");
                 result = new JobRunResult(job, null);
-
             }
             catch (Exception ex)
             {

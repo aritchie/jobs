@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UIKit;
@@ -10,14 +11,35 @@ namespace Plugin.Jobs
     {
         public override async Task<JobRunResult> Run(string jobName, CancellationToken? cancelToken = null)
         {
-            var app = UIApplication.SharedApplication;
-            var taskId = (int)app.BeginBackgroundTask(jobName, () =>
+            using (var cancelSrc = new CancellationTokenSource())
             {
-                // TODO: cancelled log
-            });
-            var result = await base.Run(jobName, cancelToken);
-            app.EndBackgroundTask(taskId);
-            return result;
+                var ct = cancelToken ?? CancellationToken.None;
+                using (ct.Register(() => cancelSrc.Cancel()))
+                {
+                    var app = UIApplication.SharedApplication;
+                    var taskId = (int) app.BeginBackgroundTask(jobName, cancelSrc.Cancel);
+                    var result = await base.Run(jobName, cancelSrc.Token);
+                    app.EndBackgroundTask(taskId);
+                    return result;
+                }
+            }
+        }
+
+
+        public override async Task<IEnumerable<JobRunResult>> RunAll(CancellationToken? cancelToken = null)
+        {
+            using (var cancelSrc = new CancellationTokenSource())
+            {
+                var ct = cancelToken ?? CancellationToken.None;
+                using (ct.Register(() => cancelSrc.Cancel()))
+                {
+                    var app = UIApplication.SharedApplication;
+                    var taskId = (int) app.BeginBackgroundTask("RunAll", cancelSrc.Cancel);
+                    var result = await base.RunAll(cancelSrc.Token);
+                    app.EndBackgroundTask(taskId);
+                    return result;
+                }
+            }
         }
 
 

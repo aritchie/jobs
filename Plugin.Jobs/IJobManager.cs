@@ -35,7 +35,7 @@ namespace Plugin.Jobs
         /// </summary>
         /// <param name="cancelToken"></param>
         /// <returns></returns>
-        Task<IEnumerable<JobRunResult>> Run(CancellationToken? cancelToken = null);
+        Task<IEnumerable<JobRunResult>> RunAll(CancellationToken? cancelToken = null);
 
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Plugin.Jobs
         /// Create a new job
         /// </summary>
         /// <param name="jobInfo"></param>
-        void Schedule(JobInfo jobInfo);
+        Task Schedule(JobInfo jobInfo);
 
 
         /// <summary>

@@ -111,10 +111,10 @@ CrossJobs.Current.Schedule(job);
 CrossJobs.Current.Cancel("YourJobName");
 
 // Cancelling All Jobs
-CrossJobs.Current.CancelAllJobs();
+CrossJobs.Current.CancelAll();
 
 // Run All Jobs On-Demand
-var results = await CrossJobs.Current.Run();
+var results = await CrossJobs.Current.RunAll();
 
 // Run A Specific Job On-Demand
 var result = await CrossJobs.Current.Run("YourJobName");

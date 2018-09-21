@@ -8,7 +8,8 @@ namespace Plugin.Jobs
     {
         public async void Run(IBackgroundTaskInstance taskInstance)
         {
-            await CrossJobs.Current.Run();
+            //taskInstance.Canceled += (sender, reason) => { };
+            await CrossJobs.Current.RunAll();
             taskInstance.GetDeferral().Complete();
         }
     }
