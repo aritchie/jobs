@@ -37,6 +37,9 @@ namespace Plugin.Jobs
             cb.RegisterJob<IJob>("test");
             var container = cb.Build();
 
+            // TODO: IJobFactory could contain Register method that puts it on the container,
+            // but container is already likely built
+
             // TODO: what if job is already registered - need method to check
             container.Resolve<IJobManager>().Schedule(new JobInfo
             {
