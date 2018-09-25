@@ -8,7 +8,7 @@
         <RootNamespace>Plugin.Jobs.Autofac</RootNamespace>
         <Description>ACR Jobs Plugin Autofac Extensions for Xamarin and Windows</Description>
         <Product>$(AssemblyName) ($(TargetFramework))</Product>
-        <PackageVersion>1.0.0-beta2</PackageVersion>
+        <PackageVersion>1.0.0-beta3</PackageVersion>
         <RepositoryUrl>https://github.com/aritchie/jobs</RepositoryUrl>
         <PackageProjectUrl>https://github.com/aritchie/jobs</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/aritchie/jobs/blob/master/LICENSE.md</PackageLicenseUrl>

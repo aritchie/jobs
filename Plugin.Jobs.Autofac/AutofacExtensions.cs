@@ -13,8 +13,7 @@ namespace Plugin.Jobs
                 .SingleInstance();
 
 
-
-        public static void RegisterJobManager(this ContainerBuilder builder, bool includeAutofacJobFactory = true)
+        public static void RegisterJobManager(this ContainerBuilder builder, bool includeAutofacJobFactory = true, Action<IJobManager> onReady = null)
         {
             if (includeAutofacJobFactory)
             {
@@ -29,7 +28,12 @@ namespace Plugin.Jobs
                 .As<IJobManager>()
                 .SingleInstance();
 
-            builder.RegisterBuildCallback(c => CrossJobs.Current = c.Resolve<IJobManager>());
+            builder.RegisterBuildCallback(c =>
+            {
+                var mgr = c.Resolve<IJobManager>();
+                CrossJobs.Current = mgr;
+                onReady?.Invoke(mgr);
+            });
         }
     }
 }
