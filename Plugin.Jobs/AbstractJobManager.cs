@@ -88,19 +88,18 @@ namespace Plugin.Jobs
             this.IsRunning = false;
             var jobs = this.Repository.GetJobs();
             var runId = Guid.NewGuid().ToString();
-            var list = new List<JobRunResult>();
+            var tasks = new List<Task<JobRunResult>>();
 
             foreach (var job in jobs)
             {
                 if (this.CheckCriteria(job))
-                {
-                    var result = await this.RunJob(job, "", ct).ConfigureAwait(false);
-                    list.Add(result);
-                }
+                    tasks.Add(this.RunJob(job, runId, ct));
             }
 
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+            var results = tasks.Select(x => x.Result).AsEnumerable();
             this.IsRunning = false;
-            return (IEnumerable<JobRunResult>)list;
+            return results;
         });
 
 
