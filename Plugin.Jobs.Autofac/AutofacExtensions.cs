@@ -13,11 +13,20 @@ namespace Plugin.Jobs
                 .SingleInstance();
 
 
-        public static void RegisterJobManager(this ContainerBuilder builder)
+
+        public static void RegisterJobManager(this ContainerBuilder builder, bool includeAutofacJobFactory = true)
         {
+            if (includeAutofacJobFactory)
+            {
+                builder
+                    .RegisterType<AutofacJobFactory>()
+                    .As<IJobFactory>()
+                    .SingleInstance();
+            }
+
             builder
-                .RegisterType<AutofacJobFactory>()
-                .As<IJobFactory>()
+                .RegisterType<JobManagerImpl>()
+                .As<IJobManager>()
                 .SingleInstance();
 
             builder.RegisterBuildCallback(c => CrossJobs.Current = c.Resolve<IJobManager>());

@@ -20,6 +20,7 @@ namespace Sample
             var builder = new ContainerBuilder();
             builder.RegisterJobManager();
             builder.RegisterJob<SampleJob>();
+            var container = builder.Build();
 
             this.MainPage = new NavigationPage(new MainPage());
         }

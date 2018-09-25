@@ -10,7 +10,7 @@ namespace Plugin.Jobs
         public static void Init()
         {
             Current = new JobManagerImpl();
-            UIApplication.SharedApplication.SetMinimumBackgroundFetchInterval(900); // TODO
+            UIApplication.SharedApplication.SetMinimumBackgroundFetchInterval(UIApplication.BackgroundFetchIntervalMinimum);
         }
 
 
