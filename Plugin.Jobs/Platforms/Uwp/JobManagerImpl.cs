@@ -8,6 +8,11 @@ namespace Plugin.Jobs
 {
     public class JobManagerImpl : AbstractJobManager
     {
+        public JobManagerImpl(IJobRepository repository = null, IJobFactory factory = null) : base(repository, factory)
+        {
+        }
+
+
         public override async Task Schedule(JobInfo jobInfo)
         {
             var requestStatus = await BackgroundExecutionManager.RequestAccessAsync();
@@ -60,7 +65,7 @@ namespace Plugin.Jobs
                 //builder.SetTrigger(new GattServiceProviderTrigger());
                 //builder.SetTrigger(new GeovisitTrigger());
                 //builder.SetTrigger(new ToastNotificationActionTrigger());
-                builder.SetTrigger(new TimeTrigger(600000, false)); // 10mins - make configurable later
+                builder.SetTrigger(new TimeTrigger(10, false)); // 10mins - make configurable later
                 builder.Register();
             }
         }

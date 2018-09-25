@@ -1,4 +1,7 @@
 ﻿using System;
+using Autofac;
+using Plugin.Jobs;
+using Sample.Jobs;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,6 +16,11 @@ namespace Sample
         {
             this.InitializeComponent();
             GlobalExceptionHandler.Register();
+
+            var builder = new ContainerBuilder();
+            builder.RegisterJobManager();
+            builder.RegisterJob<SampleJob>();
+
             this.MainPage = new NavigationPage(new MainPage());
         }
     }

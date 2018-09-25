@@ -9,6 +9,11 @@ namespace Plugin.Jobs
 {
     public class JobManagerImpl : AbstractJobManager
     {
+        public JobManagerImpl(IJobRepository repository = null, IJobFactory factory = null) : base(repository, factory)
+        {
+        }
+
+
         public override async Task<JobRunResult> Run(string jobName, CancellationToken? cancelToken = null)
         {
             using (var cancelSrc = new CancellationTokenSource())

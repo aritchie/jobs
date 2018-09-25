@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Plugin.Jobs.Autofac\Plugin.Jobs.Autofac.csproj" />
     <ProjectReference Include="..\..\Plugin.Jobs\Plugin.Jobs.csproj" />
   </ItemGroup>
 </Project>

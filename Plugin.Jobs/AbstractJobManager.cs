@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Plugin.Jobs.Infrastructure;
@@ -12,6 +11,17 @@ namespace Plugin.Jobs
 {
     public abstract class AbstractJobManager : IJobManager
     {
+        protected AbstractJobManager(IJobRepository repository, IJobFactory factory)
+        {
+            this.Repository = repository ?? new SqliteJobRepository();
+            this.Factory = factory ?? new ReflectionJobFactory();
+        }
+
+
+        protected IJobRepository Repository { get; }
+        protected IJobFactory Factory { get; }
+
+
         public virtual async void RunTask(string taskName, Func<Task> task)
         {
             try
@@ -29,7 +39,7 @@ namespace Plugin.Jobs
 
         public virtual async Task<JobRunResult> Run(string jobName, CancellationToken? cancelToken = null)
         {
-            var job = JobServices.Repository.GetByName(jobName);
+            var job = this.Repository.GetByName(jobName);
             if (job == null)
                 throw new ArgumentException("No job found named " + jobName);
 
@@ -38,13 +48,13 @@ namespace Plugin.Jobs
         }
 
 
-        public virtual IEnumerable<JobInfo> GetJobs() => JobServices.Repository.GetJobs();
+        public virtual IEnumerable<JobInfo> GetJobs() => this.Repository.GetJobs();
         public virtual IEnumerable<JobLog> GetLogs(string jobName = null, DateTime? since = null, bool errorsOnly = false)
-            => JobServices.Repository.GetLogs(jobName, since, errorsOnly);
+            => this.Repository.GetLogs(jobName, since, errorsOnly);
 
 
-        public virtual void Cancel(string jobName) => JobServices.Repository.Cancel(jobName);
-        public virtual void CancelAll() => JobServices.Repository.CancelAll();
+        public virtual void Cancel(string jobName) => this.Repository.Cancel(jobName);
+        public virtual void CancelAll() => this.Repository.CancelAll();
         public bool IsRunning { get; protected set; }
         public event EventHandler<JobRunResult> JobFinished;
 
@@ -60,11 +70,11 @@ namespace Plugin.Jobs
             //if (!jobInfo.Type.GetTypeInfo().IsAssignableFrom(typeof(IJob)))
             //    throw new ArgumentException($"{jobInfo.Type.FullName} is not an implementation of {typeof(IJob).Name}");
 
-            var existing = JobServices.Repository.GetByName(jobInfo.Name);
+            var existing = this.Repository.GetByName(jobInfo.Name);
             if (existing != null)
                 throw new ArgumentException($"A job with the name '{jobInfo.Name}' already exists");
 
-            JobServices.Repository.Create(jobInfo);
+            this.Repository.Create(jobInfo);
             return Task.CompletedTask;
         }
 
@@ -76,7 +86,7 @@ namespace Plugin.Jobs
 
             var ct = cancelToken ?? CancellationToken.None;
             this.IsRunning = false;
-            var jobs = JobServices.Repository.GetJobs();
+            var jobs = this.Repository.GetJobs();
             var runId = Guid.NewGuid().ToString();
             var list = new List<JobRunResult>();
 
@@ -124,7 +134,7 @@ namespace Plugin.Jobs
             try
             {
                 this.LogJob(JobState.Start, job, "manual");
-                var service = JobServices.Factory.GetInstance(job);
+                var service = this.Factory.GetInstance(job);
 
                 await service
                     .Run(job, ct)
@@ -141,7 +151,7 @@ namespace Plugin.Jobs
             finally
             {
                 job.LastRunUtc = DateTime.UtcNow;
-                JobServices.Repository.Update(job);
+                this.Repository.Update(job);
             }
             this.JobFinished?.Invoke(this, result);
             return result;
@@ -151,7 +161,7 @@ namespace Plugin.Jobs
                                       JobInfo job,
                                       string runId,
                                       Exception exception = null)
-            => JobServices.Repository.Log(new JobLog
+            => this.Repository.Log(new JobLog
             {
                 JobName = job.Name,
                 RunId = runId,
@@ -162,7 +172,7 @@ namespace Plugin.Jobs
 
 
         protected virtual void LogTask(JobState state, string taskName, Exception exception = null)
-            => JobServices.Repository.Log(new JobLog
+            => this.Repository.Log(new JobLog
             {
                 JobName = taskName,
                 CreatedOn = DateTime.UtcNow,
