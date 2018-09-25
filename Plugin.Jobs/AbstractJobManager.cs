@@ -71,10 +71,20 @@ namespace Plugin.Jobs
             //    throw new ArgumentException($"{jobInfo.Type.FullName} is not an implementation of {typeof(IJob).Name}");
 
             var existing = this.Repository.GetByName(jobInfo.Name);
-            if (existing != null)
-                throw new ArgumentException($"A job with the name '{jobInfo.Name}' already exists");
+            if (existing == null)
+            {
+                this.Repository.Create(jobInfo);
+            }
+            else
+            {
+                existing.Type = jobInfo.Type;
+                existing.BatteryNotLow = jobInfo.BatteryNotLow;
+                existing.DeviceCharging = jobInfo.DeviceCharging;
+                existing.RequiredNetwork = jobInfo.RequiredNetwork;
+                existing.Parameters = jobInfo.Parameters;
 
-            this.Repository.Create(jobInfo);
+                this.Repository.Update(existing);
+            }
             return Task.CompletedTask;
         }
 
