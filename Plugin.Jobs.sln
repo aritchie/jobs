@@ -15,17 +15,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample", "Sample\Sample\Sam
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{61E27DD8-956D-4D36-BC84-D6EC896CE8E1}"
 	ProjectSection(SolutionItems) = preProject
+		autofac.md = autofac.md
 		changelog.md = changelog.md
+		faq.md = faq.md
 		ISSUE_TEMPLATE = ISSUE_TEMPLATE
 		LICENSE.md = LICENSE.md
 		nuget.exe = nuget.exe
+		other.md = other.md
+		platform_android.md = platform_android.md
+		platform_ios.md = platform_ios.md
+		platform_uwp.md = platform_uwp.md
 		push.cmd = push.cmd
 		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.Jobs.Tests", "Plugin.Jobs.Tests\Plugin.Jobs.Tests.csproj", "{9E24E237-156B-415C-8CF9-95162F5B3455}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.Jobs.Autofac", "Plugin.Jobs.Autofac\Plugin.Jobs.Autofac.csproj", "{9EF58171-5906-4618-95AE-0DA06BFE52EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.Jobs.Autofac", "Plugin.Jobs.Autofac\Plugin.Jobs.Autofac.csproj", "{9EF58171-5906-4618-95AE-0DA06BFE52EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

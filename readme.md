@@ -1,7 +1,7 @@
 # ACR Jobs Plugin Plugin for Xamarin & Windows
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs/)
-[Change Log - Sept 14, 2018](changelog.md)
+[Change Log - Sept 26, 2018](changelog.md)
 
 
 ## PLATFORMS
@@ -11,59 +11,36 @@ Platform|Version
 Android|5.0+
 iOS|8+
 Windows UWP|16299+
+Any Other Platform|Must Support .NET Standard 2.0
 
 ## FEATURES
+* Cross Platform Job Framework
+* Run adhoc jobs in the background (mainly for use on iOS)
+* Define jobs with runtime parameters to run at regular intervals
+* Place criteria as to when jobs can run responsibly
+    * battery charging or not low
+    * network connectivity via WiFi or Mobile
 
-* Run jobs in the background (mainly for use on iOS)
-
-
+## Docs
+* Setup
+    * [Android](platform_android.md)
+    * [iOS](platform_ios.md)
+    * [UWP](platform_uwp.md)
+* Running Adhoc One-Time Tasks
+* Scheduling Defined Jobs
+* [Querying Jobs, Run Logs, & Events](other.md)
+* Dependency Injection
+    * [Autofac](autofac.md)
+    * Support for DryIoc coming soon
+    
 ## SETUP
-[![NuGet](https://img.shields.io/nuget/v/Plugin.BluetoothLE.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.BluetoothLE/)
 
-**Android**
+Install From [![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs/)
 
-Add the following to your AndroidManifest.xml
-
-```csharp
-// IN your launch activity or application
-
-Plugin.Jobs.CrossJobs.Init(activity, bundle);
-
-
-[assembly: UsesPermission("android.permission.BIND_JOB_SERVICE")]
-[assembly: UsesPermission("android.permission.RECEIVE_BOOT_COMPLETED")]
-[assembly: UsesPermission(Android.Manifest.Permission.AccessNetworkState)]
-[assembly: UsesPermission(Android.Manifest.Permission.BatteryStats)]
-```
-OR
-
-```xml
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.BATTERY_STATS" />	
-<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-<uses-permission android:name="android.permission.BIND_JOB_SERVICE" />
-```
-
-**iOS**
-
-```csharp
-// In AppDelegate.FinishedLaunching, add the following
-Plugin.Jobs.CrossJobs.Init();
-
-// Also, in AppDelegate, insert the following
-public override void PerformFetch(UIApplication application, Action<UIBackgroundFetchResult> completionHandler)
-{
-    Plugin.Jobs.CrossJobs.OnBackgroundFetch(completionHandler);
-}
-```
-
-```xml
-<!--Add the following to your info.plish-->
-<key>UIBackgroundModes</key>
-<array>
-	<string>background-fetch</string>
-</array>
-```
+Follow the Setup Guids
+* [Android](platform_android.md)
+* [iOS](platform_ios.md)
+* [UWP](platform_uwp.md)
 
 ## HOW TO USE
 
@@ -119,43 +96,4 @@ var results = await CrossJobs.Current.RunAll();
 // Run A Specific Job On-Demand
 var result = await CrossJobs.Current.Run("YourJobName");
 
-// Listening for job(s) to Finish when not running on-demand
-CrossJobs.Current.JobFinished += (sender, args) =>
-{
-    args.Job.Name // etc
-    args.Success
-    args.Exception
-}
-
-// Get Current Jobs (this does not include Tasks!)
-var jobs = CrossJobs.Current.GetJobs();
-
-
-// Get Job Logs - All Variables involved are optional filters
-var logs = CrossJobs.Current.GetLogs(
-    jobName,  // for a specific job
-    DateTime.Yesterday, // all logs since this date/time (UTC based)
-    errorsOnly // boolean to review logs that errored only
-)
-
-// Plugging in custom job factory
-TODO
 ```
-
-## FAQ
-
-Q. How long does the background sync let me have on iOS
-
-> 30 seconds and not a penny more
-
-Q. How long does a task run on iOS
-
-> 3 minutes on iOS 10+, 10 mins on iOS 8+
-
-Q. How do I schedule periodic jobs?
-
-> All jobs are considered periodic with or without criteria
-
-Q. Why no job triggers? (ie. geofence, bluetooth, specific time)
-
-> I am considering some triggers in the future. The current limitations on the time factored jobs is that iOS is in complete control of how/when things are run
