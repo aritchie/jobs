@@ -49,7 +49,6 @@ Supported Platforms
         <Compile Remove="Platforms\**\*.cs" />
         <None Include="Platforms\**\*.cs" />
         <PackageReference Include="Acr.Core" Version="2.2.0" />
-        <PackageReference Include="Xamarin.Essentials" Version="0.10.0-preview" />
         <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
     </ItemGroup>
@@ -59,15 +58,21 @@ Supported Platforms
     </ItemGroup>
 
     <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+        <PackageReference Include="Xamarin.Essentials" Version="0.10.0-preview" />
         <Compile Include="Platforms\Android\**\*.cs" />
+        <Compile Include="Platforms\Shared\**\*.cs" />
     </ItemGroup>
 
     <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
+        <PackageReference Include="Xamarin.Essentials" Version="0.10.0-preview" />
         <Compile Include="Platforms\iOS\**\*.cs" />
+        <Compile Include="Platforms\Shared\**\*.cs" />
     </ItemGroup>
 
     <ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
+        <PackageReference Include="Xamarin.Essentials" Version="0.10.0-preview" />
         <Compile Include="Platforms\Uwp\**\*.cs" />
+        <Compile Include="Platforms\Shared\**\*.cs" />
     </ItemGroup>
 
 </Project>

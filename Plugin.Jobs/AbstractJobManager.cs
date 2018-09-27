@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Plugin.Jobs.Infrastructure;
-using Xamarin.Essentials;
 
 
 namespace Plugin.Jobs
@@ -20,6 +19,7 @@ namespace Plugin.Jobs
 
         protected IJobRepository Repository { get; }
         protected IJobFactory Factory { get; }
+        protected abstract bool CheckCriteria(JobInfo job);
 
 
         public virtual async void RunTask(string taskName, Func<Task> task)
@@ -111,29 +111,6 @@ namespace Plugin.Jobs
             this.IsRunning = false;
             return results;
         });
-
-
-        protected virtual bool CheckCriteria(JobInfo job)
-        {
-            var pluggedIn = Battery.State == BatteryState.Charging || Battery.State == BatteryState.Full;
-
-            if (job.BatteryNotLow)
-            {
-                var lowBattery = Battery.ChargeLevel <= 0.2;
-                if (!pluggedIn && lowBattery)
-                    return false;
-            }
-
-            var inetAvail = Connectivity.NetworkAccess == NetworkAccess.Internet;
-            var wifi = Connectivity.Profiles.Contains(ConnectionProfile.WiFi);
-            if (job.RequiredNetwork == NetworkType.Any && !inetAvail)
-                return false;
-
-            if (job.RequiredNetwork == NetworkType.WiFi && !wifi)
-                return false;
-
-            return true;
-        }
 
 
         protected virtual async Task<JobRunResult> RunJob(JobInfo job, string batchName, CancellationToken? cancelToken)
