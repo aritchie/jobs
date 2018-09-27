@@ -1,7 +1,7 @@
 # ACR Jobs Plugin Plugin for Xamarin & Windows
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs/)
-[Change Log - Sept 26, 2018](changelog.md)
+[Change Log - Sept 27, 2018](changelog.md)
 
 
 ## PLATFORMS
@@ -31,7 +31,7 @@ Any Other Platform|Must Support .NET Standard 2.0
 * [Querying Jobs, Run Logs, & Events](other.md)
 * Dependency Injection
     * [Autofac](autofac.md)
-    * Support for DryIoc coming soon
+    * [DryIoc](dryioc.md)
     
 ## SETUP
 

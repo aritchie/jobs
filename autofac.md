@@ -2,6 +2,7 @@
 
 Install [![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.Autofac.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.Autofac/)
 
+Make sure to call CrossJobs.Init(..); on the respective platform even though you are doing DI.  There are some internals that still need initialization!
 
 ### Registering the JobManager on your container (IJobManager)
 ```csharp
