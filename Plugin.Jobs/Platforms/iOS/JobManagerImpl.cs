@@ -14,6 +14,9 @@ namespace Plugin.Jobs
         }
 
 
+        protected override bool CheckCriteria(JobInfo job) => job.IsEligibleToRun();
+
+
         public override async Task<JobRunResult> Run(string jobName, CancellationToken? cancelToken = null)
         {
             using (var cancelSrc = new CancellationTokenSource())

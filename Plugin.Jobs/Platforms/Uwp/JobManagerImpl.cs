@@ -13,6 +13,9 @@ namespace Plugin.Jobs
         }
 
 
+        protected override bool CheckCriteria(JobInfo job) => job.IsEligibleToRun();
+
+
         public override async Task Schedule(JobInfo jobInfo)
         {
             var requestStatus = await BackgroundExecutionManager.RequestAccessAsync();
@@ -65,7 +68,8 @@ namespace Plugin.Jobs
                 //builder.SetTrigger(new GattServiceProviderTrigger());
                 //builder.SetTrigger(new GeovisitTrigger());
                 //builder.SetTrigger(new ToastNotificationActionTrigger());
-                builder.SetTrigger(new TimeTrigger(10, false)); // 10mins - make configurable later
+                var runMins = Convert.ToUInt32(Math.Round(CrossJobs.PeriodicRunTime.TotalMinutes, 0));
+                builder.SetTrigger(new TimeTrigger(runMins, false));
                 builder.Register();
             }
         }
