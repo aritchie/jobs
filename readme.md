@@ -1,7 +1,10 @@
-# ACR Jobs Plugin Plugin for Xamarin & Windows
+# ACR Background Jobs Plugin Plugin for Xamarin & Windows
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs/)
-[Change Log - Sept 27, 2018](changelog.md)
+[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.DryIoc.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.DryIoc/)
+[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.Autofac.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.Autofac/)
+
+[Change Log - Sept 28, 2018](changelog.md)
 
 
 ## PLATFORMS
@@ -14,7 +17,7 @@ Windows UWP|16299+
 Any Other Platform|Must Support .NET Standard 2.0
 
 ## FEATURES
-* Cross Platform Job Framework
+* Cross Platform Background Jobs Framework
 * Run adhoc jobs in the background (mainly for use on iOS)
 * Define jobs with runtime parameters to run at regular intervals
 * Place criteria as to when jobs can run responsibly
@@ -26,12 +29,15 @@ Any Other Platform|Must Support .NET Standard 2.0
     * [Android](platform_android.md)
     * [iOS](platform_ios.md)
     * [UWP](platform_uwp.md)
-* Running Adhoc One-Time Tasks
-* Scheduling Defined Jobs
+* [Running Adhoc One-Time Tasks](#adhoc)
+* [Scheduling Background Jobs](#schedule)
+* [Cancelling Jobs](#cancel)
+* [Running Jobs On-Demand](#ondemand)
 * [Querying Jobs, Run Logs, & Events](other.md)
 * Dependency Injection
     * [Autofac](autofac.md)
     * [DryIoc](dryioc.md)
+* [FAQ - Frequently Asked Questions](faq.md)
     
 ## SETUP
 
@@ -44,6 +50,8 @@ Follow the Setup Guids
 
 ## HOW TO USE
 
+
+#### <a name="adhoc"></a>Creating a One-Time Adhoc Job
 ```csharp
 
 // To issue an adhoc task that can continue to run in the background 
@@ -51,9 +59,11 @@ CrossJobs.Current.RunTask(async () =>
 {
     // your code
 });
+```
 
-
-// Scheduling a new job
+#### <a name="schedule"></a>Scheduling a background job
+```csharp
+// first define your job
 public class YourJob : IJob
 {
     public async Task Run(JobInfo jobInfo, CancellationToken cancelToken)
@@ -82,14 +92,22 @@ var job = new JobInfo
 
 // you can pass variables to your job
 job.Parameters.Set("LoopCount", 10);
-CrossJobs.Current.Schedule(job);
 
+// lastly, schedule it to go - don't worry about scheduling something more than once, we just update if your job name matches an existing one
+CrossJobs.Current.Schedule(job);
+```
+
+#### <a name="cancel"></a>Cancelling Jobs
+```csharp
 // Cancelling A Job
 CrossJobs.Current.Cancel("YourJobName");
 
 // Cancelling All Jobs
 CrossJobs.Current.CancelAll();
+```
 
+#### <a name="ondemand"></a>Running Jobs On-Demand
+```csharp
 // Run All Jobs On-Demand
 var results = await CrossJobs.Current.RunAll();
 
