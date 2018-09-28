@@ -1,4 +1,5 @@
 ﻿using System;
+using Acr.UserDialogs;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
@@ -24,6 +25,7 @@ namespace Sample.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
+            UserDialogs.Init(() => (Activity)Forms.Context);
             Forms.Init(this, savedInstanceState);
             this.LoadApplication(new App());
 
