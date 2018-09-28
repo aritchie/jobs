@@ -3,7 +3,6 @@ using Acr.UserDialogs;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Plugin.Jobs;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
@@ -28,8 +27,6 @@ namespace Sample.Droid
             UserDialogs.Init(() => (Activity)Forms.Context);
             Forms.Init(this, savedInstanceState);
             this.LoadApplication(new App());
-
-            CrossJobs.Init(this, savedInstanceState);
         }
     }
 }

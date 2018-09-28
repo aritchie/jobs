@@ -3,7 +3,6 @@ using System.Linq;
 using Android.App;
 using Android.App.Job;
 using Android.Content;
-using Android.OS;
 using Java.Lang;
 
 
@@ -11,22 +10,9 @@ namespace Plugin.Jobs
 {
     public static partial class CrossJobs
     {
-        public static void Init(Activity activity, Bundle bundle)
-        {
-            Xamarin.Essentials.Platform.Init(activity, bundle);
-            Init(activity);
-        }
-
-
         public static void Init(Application application)
         {
             Xamarin.Essentials.Platform.Init(application);
-            Init(application);
-        }
-
-
-        static void Init(Context context)
-        {
             Current = new JobManagerImpl();
             //    .SetRequiresCharging(true)
             //    .SetRequiresBatteryNotLow(true)
