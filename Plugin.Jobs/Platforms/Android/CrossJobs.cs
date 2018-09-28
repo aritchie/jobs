@@ -1,16 +1,11 @@
 ﻿using System;
+using System.Linq;
 using Android.App;
 using Android.App.Job;
 using Android.Content;
 using Android.OS;
 using Java.Lang;
 
-[assembly: UsesPermission("android.permission.BIND_JOB_SERVICE")]
-[assembly: UsesPermission("android.permission.RECEIVE_BOOT_COMPLETED")]
-[assembly: UsesPermission(Android.Manifest.Permission.AccessNetworkState)]
-[assembly: UsesPermission(Android.Manifest.Permission.BatteryStats)]
-
-//https://developer.android.com/guide/background/
 
 namespace Plugin.Jobs
 {
@@ -19,18 +14,18 @@ namespace Plugin.Jobs
         public static void Init(Activity activity, Bundle bundle)
         {
             Xamarin.Essentials.Platform.Init(activity, bundle);
-            Init();
+            Init(activity);
         }
 
 
         public static void Init(Application application)
         {
             Xamarin.Essentials.Platform.Init(application);
-            Init();
+            Init(application);
         }
 
 
-        static void Init()
+        static void Init(Context context)
         {
             Current = new JobManagerImpl();
             //    .SetRequiresCharging(true)
@@ -39,15 +34,18 @@ namespace Plugin.Jobs
             //    .SetRequiredNetworkType(NetworkType.Unmetered)
             //    .SetExtras(params)
             var jobScheduler = (JobScheduler) Application.Context.GetSystemService(Context.JobSchedulerService);
+            if (jobScheduler.AllPendingJobs.Any(x => x.Id == 100))
+                return;
+
             var job = new Android.App.Job.JobInfo.Builder(
-                    0,
+                    100,
                     new ComponentName(
-                        Application.Context,
+                        context,
                         Class.FromType(typeof(PluginJobService))
                     )
                 )
-                .SetPeriodic(0, 0)
-                //.SetPersisted(true)
+                .SetPeriodic(Convert.ToInt64(TimeSpan.FromMinutes(10).TotalMilliseconds))
+                .SetPersisted(true)
                 .Build();
 
             jobScheduler.Schedule(job);
