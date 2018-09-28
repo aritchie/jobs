@@ -13,12 +13,7 @@ namespace Plugin.Jobs.DryIoc
         public static void RegisterJobManager(this Container container, bool includeDryIocJobFactory = true)
         {
             if (includeDryIocJobFactory)
-            {
-                container
-                    .Register<DryIocJobFactory>()
-                    .As<IJobFactory>()
-                    .SingleInstance();
-            }
+                container.Register<IJobFactory, DryIocJobFactory>(Reuse.Singleton);
 
             container.Register<IJobManager, JobManagerImpl>(Reuse.Singleton);
             CrossJobs.Current = container.Resolve<IJobManager>();
