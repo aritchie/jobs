@@ -6,7 +6,7 @@
         <Company />
         <AssemblyName>Plugin.Jobs</AssemblyName>
         <RootNamespace>Plugin.Jobs</RootNamespace>
-        <Description>ACR Jobs Plugin for Xamarin and Windows
+        <Description>ACR Background Jobs Plugin for Xamarin and Windows
 
 Supported Platforms
 * .NET Standard

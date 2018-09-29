@@ -6,7 +6,7 @@
         <Company />
         <AssemblyName>Plugin.Jobs.Autofac</AssemblyName>
         <RootNamespace>Plugin.Jobs.Autofac</RootNamespace>
-        <Description>ACR Jobs Plugin Autofac Extensions for Xamarin and Windows</Description>
+        <Description>ACR Background Jobs Plugin Autofac Extensions</Description>
         <Product>$(AssemblyName) ($(TargetFramework))</Product>
         <PackageVersion>1.0.0</PackageVersion>
         <RepositoryUrl>https://github.com/aritchie/jobs</RepositoryUrl>
