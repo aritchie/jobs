@@ -2,9 +2,9 @@
 
 1.Install From [![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs/)
 
-2. In your application.OnCreate - add the following (if you don't have one, please take a look at the [sample](https://github.com/aritchie/jobs/blob/master/Sample/Sample.Android/MainActivity.cs)).  This is required in order for background reboots to take place.
+2. In your Main/Launch Activity.OnCreate - add the following
 ```csharp
-Plugin.Jobs.CrossJobs.Init(activity, bundle); // activity
+Plugin.Jobs.CrossJobs.Init(this, savedInstanceState); // activity
 ```
 
 

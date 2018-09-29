@@ -6,11 +6,10 @@ namespace Plugin.Jobs
 {
     public static partial class CrossJobs
     {
-        public static void Init()
+        static CrossJobs()
         {
             Current = new JobManagerImpl();
         }
-
 
 
         static Timer timer;

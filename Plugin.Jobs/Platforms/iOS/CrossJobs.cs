@@ -7,11 +7,8 @@ namespace Plugin.Jobs
 {
     public static partial class CrossJobs
     {
-        public static void Init()
-        {
-            Current = new JobManagerImpl();
-            UIApplication.SharedApplication.SetMinimumBackgroundFetchInterval(UIApplication.BackgroundFetchIntervalMinimum);
-        }
+        static CrossJobs() => Current = new JobManagerImpl();
+        public static void Init() => UIApplication.SharedApplication.SetMinimumBackgroundFetchInterval(UIApplication.BackgroundFetchIntervalMinimum);
 
 
         public static void OnBackgroundFetch(Action<UIBackgroundFetchResult> completionHandler)

@@ -47,7 +47,7 @@ namespace Sample
                     await CrossJobs.Current.Schedule(job);
 
                     this.LoadJobs.Execute(null);
-                    this.dialogs.Toast("Job Created");
+                    this.dialogs.Toast("Job Created Successfully");
                 },
                 valObs
             );
@@ -162,12 +162,14 @@ namespace Sample
             this.LoadJobs.Execute(null);
             this.LoadLogs.Execute(null);
 
+            CrossJobs.Current.JobStarted += this.OnJobStarted;
             CrossJobs.Current.JobFinished += this.OnJobFinished;
         }
 
 
         public void OnDisappearing()
         {
+            CrossJobs.Current.JobStarted -= this.OnJobStarted;
             CrossJobs.Current.JobFinished -= this.OnJobFinished;
         }
 
@@ -188,6 +190,10 @@ namespace Sample
         [Reactive] public bool BatteryNotLow { get; set; }
         [Reactive] public bool DeviceCharging { get; set; }
         [Reactive] public bool IsBusy { get; set; }
+
+
+        void OnJobStarted(object sender, JobInfo job)
+            => this.dialogs.Toast($"Job {job.Name} Started Running");
 
 
         void OnJobFinished(object sender, JobRunResult args)

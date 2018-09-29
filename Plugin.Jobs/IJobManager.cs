@@ -23,6 +23,11 @@ namespace Plugin.Jobs
         /// </summary>
         bool IsRunning { get; }
 
+        /// <summary>
+        /// Fires just as a job is about to start
+        /// </summary>
+        event EventHandler<JobInfo> JobStarted;
+
 
         /// <summary>
         /// Fires as each job finishes

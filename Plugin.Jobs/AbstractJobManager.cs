@@ -56,6 +56,7 @@ namespace Plugin.Jobs
         public virtual void Cancel(string jobName) => this.Repository.Cancel(jobName);
         public virtual void CancelAll() => this.Repository.CancelAll();
         public bool IsRunning { get; protected set; }
+        public event EventHandler<JobInfo> JobStarted;
         public event EventHandler<JobRunResult> JobFinished;
 
 
@@ -115,6 +116,7 @@ namespace Plugin.Jobs
 
         protected virtual async Task<JobRunResult> RunJob(JobInfo job, string batchName, CancellationToken? cancelToken)
         {
+            this.JobStarted?.Invoke(this, job);
             var ct = cancelToken ?? CancellationToken.None;
             var result = default(JobRunResult);
             try
