@@ -40,6 +40,15 @@ namespace Plugin.Jobs.Infrastructure
         }
 
 
+        public void PurgeLogs(string jobName = null)
+        {
+            if (String.IsNullOrWhiteSpace(jobName))
+                this.conn.DeleteAll<DbJobLog>();
+            else
+                this.conn.Logs.Delete(x => x.JobName == jobName);
+        }
+
+
         // TODO: yes this was lazy :)
         public JobInfo GetByName(string jobName) => this
             .GetJobs()

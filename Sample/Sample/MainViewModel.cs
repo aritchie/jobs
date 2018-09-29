@@ -44,7 +44,7 @@ namespace Sample
                         RequiredNetwork = (NetworkType)Enum.Parse(typeof(NetworkType), this.NetworkType)
                     };
                     job.Parameters.Set("LoopCount", this.JobLoopCount);
-                    await CrossJobs.Current.Schedule(job);
+                    await this.jobManager.Schedule(job);
 
                     this.LoadJobs.Execute(null);
                     this.dialogs.Toast("Job Created Successfully");
@@ -86,6 +86,9 @@ namespace Sample
 
             this.RunAllJobs = ReactiveCommand.Create(() =>
             {
+                if (!this.AssertJobs())
+                    return;
+
                 if (this.jobManager.IsRunning)
                     this.dialogs.Alert("Job Manager is already running");
                 else
@@ -95,10 +98,27 @@ namespace Sample
                 }
             });
 
-            this.CancelAllJobs = ReactiveCommand.Create(() =>
+            this.PurgeLogs = ReactiveCommand.CreateFromTask(async _ =>
             {
-                this.jobManager.CancelAll();
-                this.LoadJobs.Execute(null);
+                var confirm = await this.dialogs.ConfirmAsync("Are you sure you wish to purge all logs?");
+                if (confirm)
+                {
+                    this.jobManager.PurgeLogs();
+                    this.LoadLogs.Execute(null);
+                }
+            });
+
+            this.CancelAllJobs = ReactiveCommand.CreateFromTask(async _ =>
+            {
+                if (!this.AssertJobs())
+                    return;
+
+                var confirm = await this.dialogs.ConfirmAsync("Are you sure you wish to cancel all jobs?");
+                if (confirm)
+                {
+                    this.jobManager.CancelAll();
+                    this.LoadJobs.Execute(null);
+                }
             });
 
             this.LoadJobs = ReactiveCommand.Create(() =>
@@ -137,8 +157,7 @@ namespace Sample
             this.LoadLogs = ReactiveCommand.Create(() =>
             {
                 this.IsBusy = true;
-                this.Logs = CrossJobs
-                    .Current
+                this.Logs = this.jobManager
                     .GetLogs()
                     .Select(x => new CommandItem
                     {
@@ -162,15 +181,15 @@ namespace Sample
             this.LoadJobs.Execute(null);
             this.LoadLogs.Execute(null);
 
-            CrossJobs.Current.JobStarted += this.OnJobStarted;
-            CrossJobs.Current.JobFinished += this.OnJobFinished;
+            this.jobManager.JobStarted += this.OnJobStarted;
+            this.jobManager.JobFinished += this.OnJobFinished;
         }
 
 
         public void OnDisappearing()
         {
-            CrossJobs.Current.JobStarted -= this.OnJobStarted;
-            CrossJobs.Current.JobFinished -= this.OnJobFinished;
+            this.jobManager.JobStarted -= this.OnJobStarted;
+            this.jobManager.JobFinished -= this.OnJobFinished;
         }
 
 
@@ -181,6 +200,7 @@ namespace Sample
         public ICommand RunAsTask { get; }
         public ICommand RunAllJobs { get; }
         public ICommand ChangeNetworkType { get; }
+        public ICommand PurgeLogs { get; }
 
         public List<CommandItem> Jobs { get; private set; }
         public List<CommandItem> Logs { get; private set; }
@@ -205,6 +225,18 @@ namespace Sample
 
             this.LoadLogs.Execute(null);
             this.LoadJobs.Execute(null);
+        }
+
+
+        bool AssertJobs()
+        {
+            if (!this.jobManager.GetJobs().Any())
+            {
+                this.dialogs.Alert("There are no jobs");
+                return false;
+            }
+
+            return true;
         }
     }
 }

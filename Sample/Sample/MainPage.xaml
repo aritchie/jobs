@@ -52,6 +52,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <ListView ItemsSource="{Binding Jobs}"
@@ -63,7 +64,7 @@
                         <DataTemplate>
                             <TextCell Text="{Binding Text}"
                                       Detail="{Binding Detail}"
-                                      Command="{Binding Command}">
+                                      Command="{Binding PrimaryCommand}">
                                 <TextCell.ContextActions>
                                     <MenuItem Text="Cancel" Command="{Binding SecondaryCommand}" IsDestructive="true" />
                                     <MenuItem Text="Run" Command="{Binding PrimaryCommand}" />
@@ -73,25 +74,41 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
+                <Button Text="Cancel All Jobs"
+                        Command="{Binding CancelAllJobs}"
+                        Grid.Row="1" />
+
                 <Button Text="Run All Jobs"
                         Command="{Binding RunAllJobs}"
-                        Grid.Row="1" />
+                        Grid.Row="2" />
             </Grid>
         </ContentPage>
 
         <ContentPage Title="Logs">
-            <ListView ItemsSource="{Binding Logs}"
-                      IsPullToRefreshEnabled="True"
-                      IsRefreshing="{Binding IsBusy}"
-                      RefreshCommand="{Binding LoadLogs}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding Text}"
-                                  Detail="{Binding Detail}"
-                                  Command="{Binding PrimaryCommand}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <ListView ItemsSource="{Binding Logs}"
+                          IsPullToRefreshEnabled="True"
+                          IsRefreshing="{Binding IsBusy}"
+                          RefreshCommand="{Binding LoadLogs}"
+                          Grid.Row="0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding Text}"
+                                      Detail="{Binding Detail}"
+                                      Command="{Binding PrimaryCommand}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Button Text="Purge All Logs"
+                        Command="{Binding PurgeLogs}"
+                        Grid.Row="1" />
+            </Grid>
         </ContentPage>
     </TabbedPage.Children>
 </TabbedPage>

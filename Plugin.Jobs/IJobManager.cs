@@ -7,9 +7,6 @@ namespace Plugin.Jobs
 {
     public interface IJobManager
     {
-        // TODO: iOS doesn't have triggers like time like UWP & Android
-        // TODO: iOS will have no concept of "criteria" like android - check UWP
-
         /// <summary>
         /// Runs a one time, adhoc task - on iOS, it will initiate a background task
         /// </summary>
@@ -22,6 +19,7 @@ namespace Plugin.Jobs
         /// Flag to see if job manager is running registered tasks
         /// </summary>
         bool IsRunning { get; }
+
 
         /// <summary>
         /// Fires just as a job is about to start
@@ -60,13 +58,20 @@ namespace Plugin.Jobs
 
 
         /// <summary>
-        ///
+        /// Get logs for jobs
         /// </summary>
         /// <param name="jobName"></param>
         /// <param name="since"></param>
         /// <param name="errorsOnly"></param>
         /// <returns></returns>
         IEnumerable<JobLog> GetLogs(string jobName = null, DateTime? since = null, bool errorsOnly = false);
+
+
+        /// <summary>
+        /// Purge runtime logs
+        /// </summary>
+        /// <param name="jobName">Pass null to purge all logs</param>
+        void PurgeLogs(string jobName = null);
 
 
         /// <summary>

@@ -22,6 +22,7 @@ namespace Plugin.Jobs
                 .Current
                 .RunAll(this.cancelSrc.Token)
                 .ContinueWith(x => this.JobFinished(@params, false));
+            //.ContinueWith(x => this.JobFinished(@params, true));
             return true;
         }
 

@@ -52,6 +52,9 @@ namespace Plugin.Jobs
         public virtual IEnumerable<JobLog> GetLogs(string jobName = null, DateTime? since = null, bool errorsOnly = false)
             => this.Repository.GetLogs(jobName, since, errorsOnly);
 
+        public virtual void PurgeLogs(string jobName = null)
+            => this.Repository.PurgeLogs(jobName);
+
 
         public virtual void Cancel(string jobName) => this.Repository.Cancel(jobName);
         public virtual void CancelAll() => this.Repository.CancelAll();
