@@ -65,9 +65,13 @@ namespace Plugin.Jobs.Infrastructure
         public void Update(JobInfo jobInfo)
         {
             var dbJob = this.conn.Get<DbJobInfo>(jobInfo.Name);
+            dbJob.TypeName = jobInfo.Type.AssemblyQualifiedName;
+            dbJob.BatteryNotLow = jobInfo.BatteryNotLow;
+            dbJob.DeviceCharging = jobInfo.DeviceCharging;
+            dbJob.RequiredNetwork = (int)jobInfo.RequiredNetwork;
+            dbJob.Payload = this.ToPayload(jobInfo.Parameters);
             dbJob.LastRunUtc = jobInfo.LastRunUtc;
 
-            // TODO
             this.conn.Update(dbJob);
         }
 
