@@ -19,3 +19,4 @@ Plugin.Jobs.CrossJobs.Init(this, savedInstanceState); // activity
 
 ### NOTES
 * If Doze is enabled, the reschedule period is not guaranteed to be an average of 10 mins.  It may be much longer. 
+* IF YOU ARE NOT SCHEDULING YOUR JOBS ON EVERY START - If you application force quits, Android will not restart the job scheduler.  For this, there is CrossJobs.EnsureJobServiceStarted

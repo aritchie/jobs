@@ -1,5 +1,9 @@
 ## FAQ
 
+Q. When should I schedule my defined jobs?  Should I do everytime I start the app.
+
+> When your app starts (Xamarin Forms App.OnStart is a good place).  It is a good practice to schedule every start.  The framework will only update jobs if one already exists.
+
 Q. How long does the background sync let me have on iOS
 
 > 30 seconds and not a penny more
@@ -23,6 +27,7 @@ Q. How many jobs can I run?
 Q. Is there job priorization?
 
 > Not yet - debating this one for the future
+
 
 Q. Why can't I set the next runtime
 
