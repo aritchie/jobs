@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 
 namespace Plugin.Jobs.Infrastructure
@@ -60,28 +61,32 @@ namespace Plugin.Jobs.Infrastructure
         public void CancelAll() => this.conn.DeleteAll<DbJobInfo>();
 
 
-        public void Create(JobInfo jobInfo) => this.conn.Insert(new DbJobInfo
+        public void Persist(JobInfo jobInfo)
         {
-            Name = jobInfo.Name,
-            TypeName = jobInfo.Type.AssemblyQualifiedName,
-            BatteryNotLow = jobInfo.BatteryNotLow,
-            DeviceCharging = jobInfo.DeviceCharging,
-            RequiredNetwork = (int)jobInfo.RequiredNetwork,
-            Payload = this.ToPayload(jobInfo.Parameters)
-        });
+            var job = this.GetDbJob(jobInfo.Name);
+            if (job == null)
+            {
+                this.conn.Insert(new DbJobInfo
+                {
+                    Name = jobInfo.Name,
+                    TypeName = jobInfo.Type.AssemblyQualifiedName,
+                    BatteryNotLow = jobInfo.BatteryNotLow,
+                    DeviceCharging = jobInfo.DeviceCharging,
+                    RequiredNetwork = (int) jobInfo.RequiredNetwork,
+                    Payload = this.ToPayload(jobInfo.Parameters)
+                });
+            }
+            else
+            {
+                job.TypeName = jobInfo.Type.AssemblyQualifiedName;
+                job.BatteryNotLow = jobInfo.BatteryNotLow;
+                job.DeviceCharging = jobInfo.DeviceCharging;
+                job.RequiredNetwork = (int)jobInfo.RequiredNetwork;
+                job.Payload = this.ToPayload(jobInfo.Parameters);
+                job.LastRunUtc = jobInfo.LastRunUtc;
 
-
-        public void Update(JobInfo jobInfo)
-        {
-            var dbJob = this.conn.Get<DbJobInfo>(jobInfo.Name);
-            dbJob.TypeName = jobInfo.Type.AssemblyQualifiedName;
-            dbJob.BatteryNotLow = jobInfo.BatteryNotLow;
-            dbJob.DeviceCharging = jobInfo.DeviceCharging;
-            dbJob.RequiredNetwork = (int)jobInfo.RequiredNetwork;
-            dbJob.Payload = this.ToPayload(jobInfo.Parameters);
-            dbJob.LastRunUtc = jobInfo.LastRunUtc;
-
-            this.conn.Update(dbJob);
+                this.conn.Update(job);
+            }
         }
 
 
@@ -94,33 +99,18 @@ namespace Plugin.Jobs.Infrastructure
         });
 
 
-        protected virtual IJobParameters FromPayload(string payload)
+        protected DbJobInfo GetDbJob(string name) => this.conn.Get<DbJobInfo>(name);
+
+        protected virtual IDictionary<string, object> FromPayload(string payload)
         {
-            var dict = new Dictionary<string, string>();
-            if (!String.IsNullOrWhiteSpace(payload))
-            {
-                var pairs = payload.Split(';');
-                foreach (var pair in pairs)
-                {
-                    var keyValue = pair.Split(':');
-                    if (keyValue.Length > 0)
-                        dict.Add(keyValue[0], keyValue[1]);
-                }
-            }
-            return new JobParameters(dict);
+            if (String.IsNullOrWhiteSpace(payload))
+                return new Dictionary<string, object>();
+
+            return JsonConvert.DeserializeObject<Dictionary<string, object>>(payload);
         }
 
 
-        protected virtual string ToPayload(IJobParameters parameters)
-        {
-            var s = "";
-            foreach (var key in parameters.Keys)
-            {
-                var value = parameters.Get(key, "");
-                s += $"{key}:{value};";
-            }
-            s = s.TrimEnd(';');
-            return s;
-        }
+        protected virtual string ToPayload(IDictionary<string, object> parameters)
+            => JsonConvert.SerializeObject(parameters);
     }
 }

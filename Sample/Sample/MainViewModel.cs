@@ -43,7 +43,7 @@ namespace Sample
                         DeviceCharging = this.DeviceCharging,
                         RequiredNetwork = (NetworkType)Enum.Parse(typeof(NetworkType), this.NetworkType)
                     };
-                    job.Parameters.Set("LoopCount", this.JobLoopCount);
+                    job.SetValue("LoopCount", this.JobLoopCount);
                     await this.jobManager.Schedule(job);
 
                     this.LoadJobs.Execute(null);

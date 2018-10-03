@@ -15,19 +15,18 @@ namespace Plugin.Jobs
         CancellationTokenSource cancelSrc;
 
 
-        public override bool OnStartJob(Android.App.Job.JobParameters @params)
+        public override bool OnStartJob(JobParameters @params)
         {
             this.cancelSrc = new CancellationTokenSource();
             CrossJobs
                 .Current
                 .RunAll(this.cancelSrc.Token)
                 .ContinueWith(x => this.JobFinished(@params, false));
-            //.ContinueWith(x => this.JobFinished(@params, true));
             return true;
         }
 
 
-        public override bool OnStopJob(Android.App.Job.JobParameters @params)
+        public override bool OnStopJob(JobParameters @params)
         {
             this.cancelSrc?.Cancel();
             return true;

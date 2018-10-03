@@ -4,7 +4,7 @@
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.DryIoc.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.DryIoc/)
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.Autofac.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.Autofac/)
 
-[Change Log - Sept 28, 2018](changelog.md)
+[Change Log - October 3, 2018](changelog.md)
 
 
 ## PLATFORMS

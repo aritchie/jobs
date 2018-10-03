@@ -74,21 +74,7 @@ namespace Plugin.Jobs
             //if (!jobInfo.Type.GetTypeInfo().IsAssignableFrom(typeof(IJob)))
             //    throw new ArgumentException($"{jobInfo.Type.FullName} is not an implementation of {typeof(IJob).Name}");
 
-            var existing = this.Repository.GetByName(jobInfo.Name);
-            if (existing == null)
-            {
-                this.Repository.Create(jobInfo);
-            }
-            else
-            {
-                existing.Type = jobInfo.Type;
-                existing.BatteryNotLow = jobInfo.BatteryNotLow;
-                existing.DeviceCharging = jobInfo.DeviceCharging;
-                existing.RequiredNetwork = jobInfo.RequiredNetwork;
-                existing.Parameters = jobInfo.Parameters;
-
-                this.Repository.Update(existing);
-            }
+            this.Repository.Persist(jobInfo);
             return Task.CompletedTask;
         }
 
@@ -142,7 +128,7 @@ namespace Plugin.Jobs
             finally
             {
                 job.LastRunUtc = DateTime.UtcNow;
-                this.Repository.Update(job);
+                this.Repository.Persist(job);
             }
             this.JobFinished?.Invoke(this, result);
             return result;

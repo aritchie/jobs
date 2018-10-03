@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using Acr.IO;
 using SQLite;
 
 
@@ -10,7 +8,8 @@ namespace Plugin.Jobs.Infrastructure
     {
         public PluginSqliteConnection() : base(
             new SQLiteConnectionString(
-                Path.Combine(FileSystem.Current.AppData.FullName, "jobsplugin.db"),
+                //Path.Combine(FileSystem.Current.AppData.FullName, "jobsplugin.db"),
+                "jobsplugin.db",
                 true,
                 null
             ),
@@ -24,7 +23,6 @@ namespace Plugin.Jobs.Infrastructure
 
         public TableQuery<DbJobInfo> Jobs => this.Table<DbJobInfo>();
         public TableQuery<DbJobLog> Logs => this.Table<DbJobLog>();
-
     }
 
 

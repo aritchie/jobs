@@ -1,5 +1,5 @@
 ﻿using System;
-using Plugin.Jobs.Infrastructure;
+using System.Collections.Generic;
 
 
 namespace Plugin.Jobs
@@ -18,6 +18,6 @@ namespace Plugin.Jobs
         public bool BatteryNotLow { get; set; }
         public NetworkType RequiredNetwork { get; set; } = NetworkType.None;
         public DateTime? LastRunUtc { get; set; }
-        public IJobParameters Parameters { get; set; } = new JobParameters();
+        public IDictionary<string, object> Parameters { get; set; } = new Dictionary<string, object>();
     }
 }

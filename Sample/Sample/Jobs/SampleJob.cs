@@ -17,7 +17,7 @@ namespace Sample.Jobs
         {
             // you really shouldn't interact with the UI from a job
             this.dialogs.Alert("HELLO FROM JOB");
-            var loops = jobInfo.Parameters.Get("LoopCount", 25);
+            var loops = jobInfo.GetValue("LoopCount", 25);
 
             for (var i = 0; i < loops; i++)
             {

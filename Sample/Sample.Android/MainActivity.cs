@@ -23,7 +23,6 @@ namespace Sample.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
             base.OnCreate(savedInstanceState);
             CrossJobs.Init(this, savedInstanceState);
             UserDialogs.Init(() => (Activity)Forms.Context);
