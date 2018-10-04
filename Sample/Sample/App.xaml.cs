@@ -16,10 +16,10 @@ namespace Sample
         public App()
         {
             this.InitializeComponent();
-            GlobalExceptionHandler.Register();
 
             var builder = new ContainerBuilder();
             builder.Register(_ => UserDialogs.Instance).As<IUserDialogs>().SingleInstance();
+            builder.RegisterType<GlobalExceptionHandler>().AsImplementedInterfaces().AutoActivate().SingleInstance();
             builder.RegisterJobManager();
             builder.RegisterJob<SampleJob>();
             var container = builder.Build();
