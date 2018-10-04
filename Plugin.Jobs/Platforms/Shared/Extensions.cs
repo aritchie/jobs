@@ -5,7 +5,7 @@ using Xamarin.Essentials;
 
 namespace Plugin.Jobs
 {
-    public static partial class Extensions
+    public static class Extensions
     {
         public static bool IsEligibleToRun(this JobInfo job)
         {

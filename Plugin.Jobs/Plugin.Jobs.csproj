@@ -1,4 +1,4 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.52">
+﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.55">
     <PropertyGroup>
         <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard2.0;MonoAndroid80;Xamarin.iOS10;uap10.0</TargetFrameworks>
         <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard2.0;MonoAndroid80;Xamarin.iOS10</TargetFrameworks>
@@ -48,6 +48,7 @@ Supported Platforms
     <ItemGroup>
         <Compile Remove="Platforms\**\*.cs" />
         <None Include="Platforms\**\*.cs" />
+        <PackageReference Include="Acr.Core" Version="2.2.1" />
         <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
         <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />

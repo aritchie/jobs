@@ -68,7 +68,7 @@ public class YourJob : IJob
 {
     public async Task Run(JobInfo jobInfo, CancellationToken cancelToken)
     {
-        var loops = jobInfo.Parameters.Get("LoopCount", 25);
+        var loops = jobInfo.GetValue("LoopCount", 25);
 
         for (var i = 0; i < loops; i++)
         {
@@ -91,7 +91,8 @@ var job = new JobInfo
 };
 
 // you can pass variables to your job
-job.Parameters.Set("LoopCount", 10);
+job.SetValue("LoopCount", 10);
+
 
 // lastly, schedule it to go - don't worry about scheduling something more than once, we just update if your job name matches an existing one
 CrossJobs.Current.Schedule(job);

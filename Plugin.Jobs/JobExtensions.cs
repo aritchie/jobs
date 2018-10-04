@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Plugin.Jobs
 {
-    public static partial class Extensions
+    public static class JobExtensions
     {
         public static T GetValue<T>(this JobInfo job, string key, T defaultValue = default(T))
         {
