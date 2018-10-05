@@ -16,13 +16,17 @@ iOS|8+
 Windows UWP|16299+
 Any Other Platform|Must Support .NET Standard 2.0
 
+iOS, Android, & UWP implementations use [Xamarin Essentials](https://github.com/xamarin/essentials)
+
 ## FEATURES
 * Cross Platform Background Jobs Framework
 * Run adhoc jobs in the background (mainly for use on iOS)
 * Define jobs with runtime parameters to run at regular intervals
 * Place criteria as to when jobs can run responsibly
-    * battery charging or not low
-    * network connectivity via WiFi or Mobile
+    * device is charging 
+    * battery is not low
+    * Internet connectivity via Mobile
+    * Internet connectivity via WiFi
 
 ## Docs
 * Setup
