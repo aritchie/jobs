@@ -37,7 +37,7 @@ namespace Plugin.Jobs
         }
 
 
-        public virtual async Task<JobRunResult> Run(string jobName, CancellationToken? cancelToken = null)
+        public virtual async Task<JobRunResult> Run(string jobName, CancellationToken cancelToken)
         {
             var job = this.Repository.GetByName(jobName);
             if (job == null)
@@ -74,18 +74,17 @@ namespace Plugin.Jobs
             //if (!jobInfo.Type.GetTypeInfo().IsAssignableFrom(typeof(IJob)))
             //    throw new ArgumentException($"{jobInfo.Type.FullName} is not an implementation of {typeof(IJob).Name}");
 
-            this.Repository.Persist(jobInfo);
+            this.Repository.Persist(jobInfo, false);
             return Task.CompletedTask;
         }
 
 
-        public virtual Task<IEnumerable<JobRunResult>> RunAll(CancellationToken? cancelToken = null) => Task.Run(async () =>
+        public virtual Task<IEnumerable<JobRunResult>> RunAll(CancellationToken cancelToken) => Task.Run(async () =>
         {
             if (this.IsRunning)
                 throw new ArgumentException("Job manager is already running");
 
-            var ct = cancelToken ?? CancellationToken.None;
-            this.IsRunning = false;
+            this.IsRunning = true;
             var jobs = this.Repository.GetJobs();
             var runId = Guid.NewGuid().ToString();
             var tasks = new List<Task<JobRunResult>>();
@@ -93,7 +92,7 @@ namespace Plugin.Jobs
             foreach (var job in jobs)
             {
                 if (this.CheckCriteria(job))
-                    tasks.Add(this.RunJob(job, runId, ct));
+                    tasks.Add(this.RunJob(job, runId, cancelToken));
             }
 
             await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -103,10 +102,9 @@ namespace Plugin.Jobs
         });
 
 
-        protected virtual async Task<JobRunResult> RunJob(JobInfo job, string batchName, CancellationToken? cancelToken)
+        protected virtual async Task<JobRunResult> RunJob(JobInfo job, string batchName, CancellationToken cancelToken)
         {
             this.JobStarted?.Invoke(this, job);
-            var ct = cancelToken ?? CancellationToken.None;
             var result = default(JobRunResult);
             try
             {
@@ -114,7 +112,7 @@ namespace Plugin.Jobs
                 var service = this.Factory.GetInstance(job);
 
                 await service
-                    .Run(job, ct)
+                    .Run(job, cancelToken)
                     .ConfigureAwait(false);
 
                 this.LogJob(JobState.Finish, job, "manual");
@@ -128,7 +126,7 @@ namespace Plugin.Jobs
             finally
             {
                 job.LastRunUtc = DateTime.UtcNow;
-                this.Repository.Persist(job);
+                this.Repository.Persist(job, true);
             }
             this.JobFinished?.Invoke(this, result);
             return result;

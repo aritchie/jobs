@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+
 namespace Plugin.Jobs
 {
     public interface IJobManager
@@ -38,7 +39,7 @@ namespace Plugin.Jobs
         /// </summary>
         /// <param name="cancelToken"></param>
         /// <returns></returns>
-        Task<IEnumerable<JobRunResult>> RunAll(CancellationToken? cancelToken = null);
+        Task<IEnumerable<JobRunResult>> RunAll(CancellationToken cancelToken = default(CancellationToken));
 
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace Plugin.Jobs
         /// <param name="jobName"></param>
         /// <param name="cancelToken"></param>
         /// <returns></returns>
-        Task<JobRunResult> Run(string jobName, CancellationToken? cancelToken = null);
+        Task<JobRunResult> Run(string jobName, CancellationToken cancelToken = default(CancellationToken));
 
 
         /// <summary>

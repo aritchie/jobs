@@ -17,12 +17,11 @@ namespace Plugin.Jobs
         protected override bool CheckCriteria(JobInfo job) => job.IsEligibleToRun();
 
 
-        public override async Task<JobRunResult> Run(string jobName, CancellationToken? cancelToken = null)
+        public override async Task<JobRunResult> Run(string jobName, CancellationToken cancelToken)
         {
             using (var cancelSrc = new CancellationTokenSource())
             {
-                var ct = cancelToken ?? CancellationToken.None;
-                using (ct.Register(() => cancelSrc.Cancel()))
+                using (cancelToken.Register(() => cancelSrc.Cancel()))
                 {
                     var app = UIApplication.SharedApplication;
                     var taskId = (int) app.BeginBackgroundTask(jobName, cancelSrc.Cancel);
@@ -34,12 +33,11 @@ namespace Plugin.Jobs
         }
 
 
-        public override async Task<IEnumerable<JobRunResult>> RunAll(CancellationToken? cancelToken = null)
+        public override async Task<IEnumerable<JobRunResult>> RunAll(CancellationToken cancelToken)
         {
             using (var cancelSrc = new CancellationTokenSource())
             {
-                var ct = cancelToken ?? CancellationToken.None;
-                using (ct.Register(() => cancelSrc.Cancel()))
+                using (cancelToken.Register(() => cancelSrc.Cancel()))
                 {
                     var app = UIApplication.SharedApplication;
                     var taskId = (int) app.BeginBackgroundTask("RunAll", cancelSrc.Cancel);

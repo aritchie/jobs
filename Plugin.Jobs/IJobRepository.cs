@@ -13,7 +13,7 @@ namespace Plugin.Jobs
         JobInfo GetByName(string jobName);
         void Cancel(string jobName);
         void CancelAll();
-        void Persist(JobInfo jobInfo);
+        void Persist(JobInfo jobInfo, bool updateDate);
         void Log(JobLog log);
     }
 }

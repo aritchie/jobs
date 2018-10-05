@@ -61,7 +61,7 @@ namespace Plugin.Jobs.Infrastructure
         public void CancelAll() => this.conn.DeleteAll<DbJobInfo>();
 
 
-        public void Persist(JobInfo jobInfo)
+        public void Persist(JobInfo jobInfo, bool updateDate)
         {
             var job = this.GetDbJob(jobInfo.Name);
             if (job == null)
@@ -83,7 +83,8 @@ namespace Plugin.Jobs.Infrastructure
                 job.DeviceCharging = jobInfo.DeviceCharging;
                 job.RequiredNetwork = (int)jobInfo.RequiredNetwork;
                 job.Payload = this.ToPayload(jobInfo.Parameters);
-                job.LastRunUtc = jobInfo.LastRunUtc;
+                if (updateDate)
+                    job.LastRunUtc = jobInfo.LastRunUtc;
 
                 this.conn.Update(job);
             }
