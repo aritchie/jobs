@@ -99,7 +99,7 @@ namespace Plugin.Jobs.Infrastructure
         });
 
 
-        protected DbJobInfo GetDbJob(string name) => this.conn.Get<DbJobInfo>(name);
+        protected DbJobInfo GetDbJob(string name) => this.conn.Find<DbJobInfo>(name);
 
         protected virtual IDictionary<string, object> FromPayload(string payload)
         {
