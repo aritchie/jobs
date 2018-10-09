@@ -13,7 +13,7 @@ namespace Plugin.Jobs
         /// </summary>
         /// <param name="taskName"></param>
         /// <param name="task"></param>
-        void RunTask(string taskName, Func<Task> task);
+        void RunTask(string taskName, Func<CancellationToken, Task> task);
 
 
         /// <summary>

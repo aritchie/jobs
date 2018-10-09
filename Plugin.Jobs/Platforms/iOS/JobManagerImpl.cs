@@ -49,19 +49,19 @@ namespace Plugin.Jobs
         }
 
 
-        public override async void RunTask(string taskName, Func<Task> task)
+        public override async void RunTask(string taskName, Func<CancellationToken, Task> task)
         {
             var app = UIApplication.SharedApplication;
             var taskId = 0;
             try
             {
-                this.LogTask(JobState.Start, taskName);
-                taskId = (int)app.BeginBackgroundTask(taskName, () =>
+                using (var cancelSrc = new CancellationTokenSource())
                 {
-                    // TODO: cancelled log
-                });
-                await task().ConfigureAwait(false);
-                this.LogTask(JobState.Finish, taskName);
+                    this.LogTask(JobState.Start, taskName);
+                    taskId = (int) app.BeginBackgroundTask(taskName, cancelSrc.Cancel);
+                    await task(cancelSrc.Token).ConfigureAwait(false);
+                    this.LogTask(JobState.Finish, taskName);
+                }
             }
             catch (Exception ex)
             {

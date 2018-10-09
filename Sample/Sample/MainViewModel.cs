@@ -53,7 +53,7 @@ namespace Sample
             );
 
             this.RunAsTask = ReactiveCommand.Create(
-                () => this.jobManager.RunTask(this.JobName + "Task", async () =>
+                () => this.jobManager.RunTask(this.JobName + "Task", async _ =>
                 {
                     this.dialogs.Toast("Task Started");
                     for (var i = 0; i < this.JobLoopCount; i++)

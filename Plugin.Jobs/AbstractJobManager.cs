@@ -22,12 +22,12 @@ namespace Plugin.Jobs
         protected abstract bool CheckCriteria(JobInfo job);
 
 
-        public virtual async void RunTask(string taskName, Func<Task> task)
+        public virtual async void RunTask(string taskName, Func<CancellationToken, Task> task)
         {
             try
             {
                 this.LogTask(JobState.Start, taskName);
-                await task().ConfigureAwait(false);
+                await task(CancellationToken.None).ConfigureAwait(false);
                 this.LogTask(JobState.Finish, taskName);
             }
             catch (Exception ex)
