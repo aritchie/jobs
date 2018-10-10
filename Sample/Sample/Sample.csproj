@@ -1,25 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DebugType>pdbonly</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Acr.UserDialogs" Version="7.0.1" />
-    <PackageReference Include="Acr.XamForms" Version="3.2.0" />
-    <PackageReference Include="Autofac" Version="4.8.1" />
-    <PackageReference Include="ReactiveUI" Version="8.7.2" />
-    <PackageReference Include="ReactiveUI.Fody" Version="8.7.2" />
-    <PackageReference Include="Xamarin.Forms" Version="3.2.0.839982" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Acr.UserDialogs" Version="7.0.1" />
+        <PackageReference Include="Acr.XamForms" Version="4.0.0" />
+        <PackageReference Include="Autofac" Version="4.8.1" />
+        <PackageReference Include="ReactiveUI" Version="9.0.1" />
+        <PackageReference Include="ReactiveUI.Fody" Version="9.0.1" />
+        <PackageReference Include="Xamarin.Forms" Version="3.2.0.871581" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Plugin.Jobs.Autofac\Plugin.Jobs.Autofac.csproj" />
-    <ProjectReference Include="..\..\Plugin.Jobs\Plugin.Jobs.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Plugin.Jobs.Autofac\Plugin.Jobs.Autofac.csproj" />
+        <ProjectReference Include="..\..\Plugin.Jobs\Plugin.Jobs.csproj" />
+    </ItemGroup>
 </Project>
