@@ -8,7 +8,7 @@
         <RootNamespace>Plugin.Jobs.Autofac</RootNamespace>
         <Description>ACR Background Jobs Plugin Autofac Extensions</Description>
         <Product>$(AssemblyName) ($(TargetFramework))</Product>
-        <PackageVersion>1.0.0</PackageVersion>
+        <PackageVersion>1.1.1</PackageVersion>
         <RepositoryUrl>https://github.com/aritchie/jobs</RepositoryUrl>
         <PackageProjectUrl>https://github.com/aritchie/jobs</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/aritchie/jobs/blob/master/LICENSE.md</PackageLicenseUrl>
