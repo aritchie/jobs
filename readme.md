@@ -4,8 +4,8 @@
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.DryIoc.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.DryIoc/)
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.Autofac.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.Autofac/)
 
-[Change Log - October 10, 2018](changelog.md)
-
+[Change Log - October 12, 2018](changelog.md)
+### [SUPPORT THIS PROJECT](https://github.com/aritchie/home)
 
 ## PLATFORMS
 
@@ -22,6 +22,7 @@ iOS, Android, & UWP implementations use [Xamarin Essentials](https://github.com/
 * Cross Platform Background Jobs Framework
 * Run adhoc jobs in the background (mainly for use on iOS)
 * Define jobs with runtime parameters to run at regular intervals
+* Internal logging to let you know how often jobs are running, if they complete successfully or error
 * Place criteria as to when jobs can run responsibly
     * device is charging 
     * battery is not low
