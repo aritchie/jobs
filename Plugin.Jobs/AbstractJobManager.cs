@@ -48,6 +48,7 @@ namespace Plugin.Jobs
         }
 
 
+        public virtual void TrimLogs(TimeSpan maxAge) => this.Repository.TrimLogs(maxAge);
         public virtual IEnumerable<JobInfo> GetJobs() => this.Repository.GetJobs();
         public virtual IEnumerable<JobLog> GetLogs(string jobName = null, DateTime? since = null, bool errorsOnly = false)
             => this.Repository.GetLogs(jobName, since, errorsOnly);

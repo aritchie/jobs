@@ -50,6 +50,13 @@ namespace Plugin.Jobs.Infrastructure
         }
 
 
+        public void TrimLogs(TimeSpan maxAge)
+        {
+            var date = DateTime.UtcNow.Subtract(maxAge);
+            this.conn.Logs.Delete(x => x.CreatedOn < date);
+        }
+
+
         // TODO: yes this was lazy :)
         public JobInfo GetByName(string jobName) => this
             .GetJobs()

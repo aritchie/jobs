@@ -76,6 +76,12 @@ namespace Plugin.Jobs
 
 
         /// <summary>
+        /// Trims old logs
+        /// </summary>
+        /// <param name="maxAge"></param>
+        void TrimLogs(TimeSpan maxAge);
+
+        /// <summary>
         /// Create a new job
         /// </summary>
         /// <param name="jobInfo"></param>
