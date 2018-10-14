@@ -1,11 +1,19 @@
 # ACR Background Jobs Plugin Plugin for Xamarin & Windows
 
+[Change Log - October 12, 2018](changelog.md)
+### [SUPPORT THIS PROJECT](https://github.com/aritchie/home)
+
+## NUGET
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs/)
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.DryIoc.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.DryIoc/)
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.Autofac.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.Autofac/)
 
-[Change Log - October 12, 2018](changelog.md)
-### [SUPPORT THIS PROJECT](https://github.com/aritchie/home)
+## BUILD STATUS
+|Branch|Status|
+|------|------|
+Master|[![Build status](https://allanritchie.visualstudio.com/Plugins/_apis/build/status/Jobs?branchName=master)](https://allanritchie.visualstudio.com/Plugins/_build/latest?definitionId=0)
+Dev|[![Build status](https://allanritchie.visualstudio.com/Plugins/_apis/build/status/Jobs?branchName=dev)](https://allanritchie.visualstudio.com/Plugins/_build/latest?definitionId=0)
+
 
 ## PLATFORMS
 
@@ -29,7 +37,7 @@ iOS, Android, & UWP implementations use [Xamarin Essentials](https://github.com/
     * Internet connectivity via Mobile
     * Internet connectivity via WiFi
 
-## Docs
+## DOCS
 * Setup
     * [Android](platform_android.md)
     * [iOS](platform_ios.md)
