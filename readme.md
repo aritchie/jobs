@@ -3,16 +3,13 @@
 [Change Log - October 12, 2018](changelog.md)
 ### [SUPPORT THIS PROJECT](https://github.com/aritchie/home)
 
-## NUGET
-[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs/)
-[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.DryIoc.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.DryIoc/)
-[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.Autofac.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.Autofac/)
+[![Build status](https://dev.azure.com/allanritchie/Plugins/_apis/build/status/Jobs)](https://dev.azure.com/allanritchie/Plugins/_build/latest?definitionId=0)
 
-## BUILD STATUS
-|Branch|Status|
-|------|------|
-Master|[![Build status](https://allanritchie.visualstudio.com/Plugins/_apis/build/status/Jobs?branchName=master)](https://allanritchie.visualstudio.com/Plugins/_build/latest?definitionId=0)
-Dev|[![Build status](https://allanritchie.visualstudio.com/Plugins/_apis/build/status/Jobs?branchName=dev)](https://allanritchie.visualstudio.com/Plugins/_build/latest?definitionId=0)
+|Library|NuGet|
+|-------|-----|
+Plugin.Jobs|[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs/)
+Plugin.Jobs.DryIoc|[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.DryIoc.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.DryIoc/)
+Plugin.Jobs.Autofac|[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.Autofac.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.Autofac/)
 
 
 ## PLATFORMS
