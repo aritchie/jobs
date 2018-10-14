@@ -25,6 +25,6 @@ public override void PerformFetch(UIApplication application, Action<UIBackground
 ```xml
 <key>UIBackgroundModes</key>
 <array>
-	<string>background-fetch</string>
+	<string>fetch</string>
 </array>
 ```
