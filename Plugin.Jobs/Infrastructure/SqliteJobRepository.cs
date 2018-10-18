@@ -41,12 +41,28 @@ namespace Plugin.Jobs.Infrastructure
         }
 
 
-        public void PurgeLogs(string jobName = null)
+        public void PurgeLogs(string jobName = null, TimeSpan? maxAge = null)
         {
             if (String.IsNullOrWhiteSpace(jobName))
-                this.conn.DeleteAll<DbJobLog>();
+            {
+                if (maxAge == null)
+                    this.conn.DeleteAll<DbJobLog>();
+                else
+                {
+                    var date = DateTime.UtcNow.Subtract(maxAge.Value);
+                    this.conn.Logs.Delete(x => x.CreatedOn < date);
+                }
+            }
             else
-                this.conn.Logs.Delete(x => x.JobName == jobName);
+            {
+                if (maxAge == null)
+                    this.conn.Logs.Delete(x => x.JobName == jobName);
+                else
+                {
+                    var date = DateTime.UtcNow.Subtract(maxAge.Value);
+                    this.conn.Logs.Delete(x => x.JobName == jobName && x.CreatedOn < date);
+                }
+            }
         }
 
 

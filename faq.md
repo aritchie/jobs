@@ -8,10 +8,6 @@ Q. How long does the background sync let me have on iOS
 
 > 30 seconds and not a penny more
 
-Q. How long does a task run on iOS
-
-> 3 minutes on iOS 10+, 10 mins on iOS 8+
-
 Q. How do I schedule periodic jobs?
 
 > All jobs are considered periodic with or without criteria

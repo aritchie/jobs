@@ -20,3 +20,8 @@ var logs = CrossJobs.Current.GetLogs(
     errorsOnly // boolean to review logs that errored only
 );
 ```
+
+## Built-In Jobs
+```csharp
+JobManager.ScheduleLogTrimmingJob(TimeSpan); // defaults to 30 days if you don't specify
+```

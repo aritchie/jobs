@@ -52,7 +52,7 @@ namespace Plugin.Jobs
         public virtual IEnumerable<JobLog> GetLogs(string jobName = null, DateTime? since = null, bool errorsOnly = false)
             => this.Repository.GetLogs(jobName, since, errorsOnly);
 
-        public virtual void PurgeLogs(string jobName = null)
+        public virtual void PurgeLogs(string jobName = null, TimeSpan? maxAge = null)
             => this.Repository.PurgeLogs(jobName);
 
 

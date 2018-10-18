@@ -71,8 +71,9 @@ namespace Plugin.Jobs
         /// <summary>
         /// Purge runtime logs
         /// </summary>
-        /// <param name="jobName">Pass null to purge all logs</param>
-        void PurgeLogs(string jobName = null);
+        /// <param name="jobName">Pass null to purge logs from any job</param>
+        /// <param name="maxAge">Optional time range to delete jobs</param>
+        void PurgeLogs(string jobName = null, TimeSpan? maxAge = null);
 
 
         /// <summary>

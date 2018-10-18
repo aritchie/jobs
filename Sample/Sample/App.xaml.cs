@@ -24,6 +24,8 @@ namespace Sample
             builder.RegisterJob<SampleJob>();
             var container = builder.Build();
 
+            container.Resolve<IJobManager>().ScheduleLogTrimmingJob();
+
             this.MainPage = new NavigationPage(new MainPage());
         }
     }
