@@ -53,7 +53,7 @@ namespace Plugin.Jobs
             => this.Repository.GetLogs(jobName, since, errorsOnly);
 
         public virtual void PurgeLogs(string jobName = null, TimeSpan? maxAge = null)
-            => this.Repository.PurgeLogs(jobName);
+            => this.Repository.PurgeLogs(jobName, maxAge);
 
 
         public virtual void Cancel(string jobName) => this.Repository.Cancel(jobName);

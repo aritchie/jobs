@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 
@@ -7,10 +6,6 @@ namespace Plugin.Jobs
 {
     public static class JobExtensions
     {
-        public static Task ScheduleLogTrimmingJob(this IJobManager jobManager) => jobManager.ScheduleLogTrimmingJob(TimeSpan.FromDays(30));
-        public static Task ScheduleLogTrimmingJob(this IJobManager jobManager, TimeSpan maxAge) => LogTrimJob.Schedule(jobManager, maxAge);
-
-
         public static T GetValue<T>(this JobInfo job, string key, T defaultValue = default(T))
         {
             if (!job.Parameters.ContainsKey(key))

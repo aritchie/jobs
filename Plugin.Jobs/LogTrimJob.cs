@@ -9,7 +9,7 @@ namespace Plugin.Jobs
     public class LogTrimJob : IJob
     {
         const string ARG_KEY = "MaxAgeInDays";
-        internal static Task Schedule(IJobManager jobManager, TimeSpan maxAge) => jobManager.Schedule(new JobInfo
+        public static JobInfo GetJobInfo(TimeSpan maxAge) => new JobInfo
         {
             Name = nameof(LogTrimJob),
             Type = typeof(LogTrimJob),
@@ -18,7 +18,7 @@ namespace Plugin.Jobs
             {
                 { ARG_KEY, maxAge.TotalSeconds }
             }
-        });
+        };
 
 
         public Task Run(JobInfo jobInfo, CancellationToken cancelToken)

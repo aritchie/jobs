@@ -22,9 +22,8 @@ namespace Sample
             builder.RegisterType<GlobalExceptionHandler>().AsImplementedInterfaces().AutoActivate().SingleInstance();
             builder.RegisterJobManager();
             builder.RegisterJob<SampleJob>();
+            builder.Schedule<LogTrimJob>(LogTrimJob.GetJobInfo(TimeSpan.FromHours(48)));
             var container = builder.Build();
-
-            container.Resolve<IJobManager>().ScheduleLogTrimmingJob();
 
             this.MainPage = new NavigationPage(new MainPage());
         }

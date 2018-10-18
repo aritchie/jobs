@@ -98,25 +98,9 @@ namespace Sample
                 }
             });
 
-            this.PurgeAllLogs = ReactiveCommand.CreateFromTask(async _ =>
-            {
-                var confirm = await this.dialogs.ConfirmAsync("Are you sure you wish to purge old logs?");
-                if (confirm)
-                {
-                    this.jobManager.PurgeLogs(null, TimeSpan.FromHours(8));
-                    this.LoadLogs.Execute(null);
-                }
-            });
+            this.PurgeOldLogs = ReactiveCommand.CreateFromTask(() => this.PurgeLogs(false));
 
-            this.PurgeAllLogs = ReactiveCommand.CreateFromTask(async _ =>
-            {
-                var confirm = await this.dialogs.ConfirmAsync("Are you sure you wish to purge all logs?");
-                if (confirm)
-                {
-                    this.jobManager.PurgeLogs();
-                    this.LoadLogs.Execute(null);
-                }
-            });
+            this.PurgeAllLogs = ReactiveCommand.CreateFromTask(() => this.PurgeLogs(true));
 
             this.CancelAllJobs = ReactiveCommand.CreateFromTask(async _ =>
             {
@@ -248,6 +232,22 @@ namespace Sample
             }
 
             return true;
+        }
+
+
+        async Task PurgeLogs(bool all)
+        {
+            TimeSpan? age = null;
+            if (!all)
+                age = TimeSpan.FromHours(8);
+
+            var msg = all ? "Are you sure you wish to purge all logs?" : "Do you want to purge logs older than 8 hours";
+            var confirm = await this.dialogs.ConfirmAsync(msg);
+            if (confirm)
+            {
+                this.jobManager.PurgeLogs(null, age);
+                this.LoadLogs.Execute(null);
+            }
         }
     }
 }
