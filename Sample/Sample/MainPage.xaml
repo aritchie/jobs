@@ -2,7 +2,7 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:local="clr-namespace:Sample"
-            xmlns:acr="clr-namespace:Acr.XamForms.Behaviors;assembly=Acr.XamForms"
+            xmlns:acr="clr-namespace:Acr.XamForms;assembly=Acr.XamForms"
             x:Class="Sample.MainPage"
             Title="Jobs Sample">
 
@@ -89,6 +89,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <ListView ItemsSource="{Binding Logs}"
@@ -105,9 +106,13 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <Button Text="Purge All Logs"
-                        Command="{Binding PurgeLogs}"
+                <Button Text="Purge Logs 8 hours or older"
+                        Command="{Binding PurgeOldLogs}"
                         Grid.Row="1" />
+
+                <Button Text="Purge All Logs"
+                        Command="{Binding PurgeAllLogs}"
+                        Grid.Row="2" />
             </Grid>
         </ContentPage>
     </TabbedPage.Children>

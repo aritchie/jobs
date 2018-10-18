@@ -1,6 +1,6 @@
 # CHANGE LOG
 
-## 1.1.2
+## 1.2.0
 * [feature] Built-in log trimming job - Use JobManager.ScheduleLogTrimmingJob(TimeSpan MaxAge)
 
 ## 1.1.1

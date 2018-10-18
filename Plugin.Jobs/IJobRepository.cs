@@ -8,8 +8,7 @@ namespace Plugin.Jobs
     {
         IEnumerable<JobInfo> GetJobs();
         IEnumerable<JobLog> GetLogs(string jobName = null, DateTime? since = null, bool failedOnly = false);
-        void PurgeLogs(string jobName = null);
-        void TrimLogs(TimeSpan maxAge);
+        void PurgeLogs(string jobName = null, TimeSpan? maxAge = null);
 
         JobInfo GetByName(string jobName);
         void Cancel(string jobName);

@@ -7,8 +7,8 @@ namespace Plugin.Jobs
 {
     public static class JobExtensions
     {
-        public static Task ScheduleLogTrimmingJob(this IJobManager jobManager) => jobManager.ScheduleLogTrimmingJob(TimeSpan.FromSeconds(30));
-        public static Task ScheduleLogTrimmingJob(this IJobManager jobManager, TimeSpan maxAge) => LogTrimmingJob.Schedule(jobManager, maxAge);
+        public static Task ScheduleLogTrimmingJob(this IJobManager jobManager) => jobManager.ScheduleLogTrimmingJob(TimeSpan.FromDays(30));
+        public static Task ScheduleLogTrimmingJob(this IJobManager jobManager, TimeSpan maxAge) => LogTrimJob.Schedule(jobManager, maxAge);
 
 
         public static T GetValue<T>(this JobInfo job, string key, T defaultValue = default(T))

@@ -98,7 +98,17 @@ namespace Sample
                 }
             });
 
-            this.PurgeLogs = ReactiveCommand.CreateFromTask(async _ =>
+            this.PurgeAllLogs = ReactiveCommand.CreateFromTask(async _ =>
+            {
+                var confirm = await this.dialogs.ConfirmAsync("Are you sure you wish to purge old logs?");
+                if (confirm)
+                {
+                    this.jobManager.PurgeLogs(null, TimeSpan.FromHours(8));
+                    this.LoadLogs.Execute(null);
+                }
+            });
+
+            this.PurgeAllLogs = ReactiveCommand.CreateFromTask(async _ =>
             {
                 var confirm = await this.dialogs.ConfirmAsync("Are you sure you wish to purge all logs?");
                 if (confirm)
@@ -200,7 +210,8 @@ namespace Sample
         public ICommand RunAsTask { get; }
         public ICommand RunAllJobs { get; }
         public ICommand ChangeNetworkType { get; }
-        public ICommand PurgeLogs { get; }
+        public ICommand PurgeOldLogs { get; }
+        public ICommand PurgeAllLogs { get; }
 
         public List<CommandItem> Jobs { get; private set; }
         public List<CommandItem> Logs { get; private set; }
