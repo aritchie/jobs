@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 
 namespace Plugin.Jobs
@@ -18,6 +19,9 @@ namespace Plugin.Jobs
             if (value.GetType() == typeof(T))
                 return (T)value;
 
+            if (value.GetType() == typeof(JObject))
+                return ((JObject) value).ToObject<T>();
+            
             return (T) Convert.ChangeType(value, typeof(T));
         }
 
