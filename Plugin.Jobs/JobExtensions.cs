@@ -21,6 +21,9 @@ namespace Plugin.Jobs
 
             if (value.GetType() == typeof(JObject))
                 return ((JObject) value).ToObject<T>();
+
+            if (value.GetType() == typeof(JArray))
+                return ((JArray) value).ToObject<T>();
             
             return (T) Convert.ChangeType(value, typeof(T));
         }

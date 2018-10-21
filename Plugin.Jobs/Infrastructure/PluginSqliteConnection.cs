@@ -7,14 +7,17 @@ using SQLite;
 namespace Plugin.Jobs.Infrastructure
 {
     public class PluginSqliteConnection : SQLiteConnectionWithLock
-    {
-        public PluginSqliteConnection() : base(
+    {           
+        public PluginSqliteConnection(string path = null) : base(
             new SQLiteConnectionString(
-                Path.Combine(FileSystem.Current.AppData.FullName, "jobsplugin_v11.db"),
+                path ?? Path.Combine(FileSystem.Current.AppData.FullName, "jobsplugin_v11.db"),
                 true,
                 null
             ),
-            SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create
+            SQLiteOpenFlags.ReadWrite | 
+            SQLiteOpenFlags.Create | 
+            SQLiteOpenFlags.FullMutex |
+            SQLiteOpenFlags.PrivateCache
         )
         {
             this.CreateTable<DbJobInfo>();

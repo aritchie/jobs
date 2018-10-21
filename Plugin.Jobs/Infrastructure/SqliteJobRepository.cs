@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Acr;
 using Newtonsoft.Json;
 
 
@@ -8,9 +9,13 @@ namespace Plugin.Jobs.Infrastructure
 {
     public class SqliteJobRepository : IJobRepository
     {
-        readonly PluginSqliteConnection conn = new PluginSqliteConnection();
+        readonly PluginSqliteConnection conn;
+        public SqliteJobRepository(PluginSqliteConnection conn = null)
+        {
+            this.conn = conn ?? new PluginSqliteConnection();
+        }
 
-
+        
         public IEnumerable<JobInfo> GetJobs() => this.conn.Jobs.ToList().Select(x => new JobInfo
         {
             Name = x.Name,
