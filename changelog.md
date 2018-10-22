@@ -1,5 +1,8 @@
 # CHANGE LOG
 
+## 1.2.1
+* [fix] Support complex objects & lists in job parameters
+
 ## 1.2.0
 * [feature] Built-in log trimming job - Use JobManager.ScheduleLogTrimmingJob(TimeSpan MaxAge)
 
