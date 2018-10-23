@@ -1,6 +1,6 @@
 # ACR Background Jobs Plugin Plugin for Xamarin & Windows
 
-[Change Log - October 17, 2018](changelog.md)
+[Change Log - October 22, 2018](changelog.md)
 ### [SUPPORT THIS PROJECT](https://github.com/aritchie/home)
 
 [![Build status](https://dev.azure.com/allanritchie/Plugins/_apis/build/status/Jobs)](https://dev.azure.com/allanritchie/Plugins/_build/latest?definitionId=0)
