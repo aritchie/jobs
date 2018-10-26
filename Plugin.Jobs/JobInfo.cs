@@ -14,6 +14,7 @@ namespace Plugin.Jobs
         //public bool RunPeriodic { get; set; }
         //public bool DeviceIdle { get; set; } // this will only work on droid
 
+        public bool Repeat { get; set; } = true;
         public bool DeviceCharging { get; set; }
         public bool BatteryNotLow { get; set; }
         public NetworkType RequiredNetwork { get; set; } = NetworkType.None;

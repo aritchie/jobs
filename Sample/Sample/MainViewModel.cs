@@ -204,6 +204,7 @@ namespace Sample
         [Reactive] public string NetworkType { get; set; } = Plugin.Jobs.NetworkType.None.ToString();
         [Reactive] public bool BatteryNotLow { get; set; }
         [Reactive] public bool DeviceCharging { get; set; }
+        [Reactive] public bool Repeat { get; set; } = true;
         [Reactive] public bool IsBusy { get; set; }
 
 

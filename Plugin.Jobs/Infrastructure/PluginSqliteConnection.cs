@@ -7,15 +7,15 @@ using SQLite;
 namespace Plugin.Jobs.Infrastructure
 {
     public class PluginSqliteConnection : SQLiteConnectionWithLock
-    {           
+    {
         public PluginSqliteConnection(string path = null) : base(
             new SQLiteConnectionString(
                 path ?? Path.Combine(FileSystem.Current.AppData.FullName, "jobsplugin_v11.db"),
                 true,
                 null
             ),
-            SQLiteOpenFlags.ReadWrite | 
-            SQLiteOpenFlags.Create | 
+            SQLiteOpenFlags.ReadWrite |
+            SQLiteOpenFlags.Create |
             SQLiteOpenFlags.FullMutex |
             SQLiteOpenFlags.PrivateCache
         )
@@ -40,6 +40,7 @@ namespace Plugin.Jobs.Infrastructure
         public bool DeviceCharging { get; set; }
         public bool BatteryNotLow { get; set; }
         public int RequiredNetwork { get; set; }
+        public bool Repeat { get; set; }
         public string Payload { get; set; }
     }
 

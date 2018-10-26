@@ -10,13 +10,16 @@ namespace Plugin.Jobs.DryIoc
         readonly IContainer container;
         public DryIocJobFactory(IContainer container) => this.container = container;
 
-        public IJob GetInstance(JobInfo jobInfo) =>
-            this.container
+        public IJob GetInstance(JobInfo jobInfo)
+        {
+            var job = this.container
                 .ResolveMany<IJob>()
                 .FirstOrDefault(x => x
                     .GetType()
-                    .FullName
-                    .Equals(jobInfo.Type.FullName)
-                ) ?? throw new ArgumentException($"No implementation for job '{jobInfo.Type.FullName}' found");
+                    .Equals(jobInfo.Type)
+                );
+
+            return job;
+        }
     }
 }

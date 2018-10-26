@@ -97,7 +97,8 @@ var job = new JobInfo
     // these are criteria that must be met in order for your job to run
     BatteryNotLow = this.BatteryNotLow,
     DeviceCharging = this.DeviceCharging
-    NetworkType = NetworkType.Any
+    NetworkType = NetworkType.Any,
+    Repeat = true; //defaults to true, set to false to run once OR set it inside a job to cancel further execution
 };
 
 // you can pass variables to your job

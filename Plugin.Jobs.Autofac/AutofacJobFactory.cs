@@ -11,13 +11,16 @@ namespace Plugin.Jobs
         readonly ILifetimeScope scope;
         public AutofacJobFactory(ILifetimeScope scope) => this.scope = scope;
 
-        public IJob GetInstance(JobInfo jobInfo) =>
-            this.scope
-                .Resolve<IEnumerable<IJob>>()
-                .FirstOrDefault(x => x
-                    .GetType()
-                    .FullName
-                    .Equals(jobInfo.Type.FullName)
-                ) ?? throw new ArgumentException($"No implementation for job '{jobInfo.Type.FullName}' found");
+
+        public IJob GetInstance(JobInfo jobInfo)
+        {
+            if (this.scope.TryResolve(out IEnumerable<IJob> list))
+            {
+                var job = list.FirstOrDefault(x => x.GetType().Equals(jobInfo.Type));
+                return job;
+            }
+
+            return null;
+        }
     }
 }

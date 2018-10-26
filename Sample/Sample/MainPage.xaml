@@ -37,6 +37,7 @@
                                   Command="{Binding ChangeNetworkType}" />
                         <SwitchCell Text="Battery Not Low" On="{Binding BatteryNotLow}" />
                         <SwitchCell Text="Device Charging" On="{Binding DeviceCharging}" />
+                        <SwitchCell Text="Repeat" On="{Binding Repeat}" />
                     </TableSection>
                 </TableView>
 

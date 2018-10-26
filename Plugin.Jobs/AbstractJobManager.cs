@@ -10,10 +10,14 @@ namespace Plugin.Jobs
 {
     public abstract class AbstractJobManager : IJobManager
     {
+        readonly ReflectionJobFactory fallbackFactory;
+
+
         protected AbstractJobManager(IJobRepository repository, IJobFactory factory)
         {
+            this.fallbackFactory = new ReflectionJobFactory();
             this.Repository = repository ?? new SqliteJobRepository();
-            this.Factory = factory ?? new ReflectionJobFactory();
+            this.Factory = factory ?? this.fallbackFactory;
         }
 
 
@@ -109,11 +113,14 @@ namespace Plugin.Jobs
             try
             {
                 this.LogJob(JobState.Start, job, "manual");
-                var service = this.Factory.GetInstance(job);
+                var service = this.Factory.GetInstance(job) ?? this.fallbackFactory.GetInstance(job);
 
                 await service
                     .Run(job, cancelToken)
                     .ConfigureAwait(false);
+
+                if (!job.Repeat)
+                    this.Cancel(job.Name);
 
                 this.LogJob(JobState.Finish, job, "manual");
                 result = new JobRunResult(job, null);

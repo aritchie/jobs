@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## 1.3.0
+* [feature] If container based job factory fails to find an instance, the default job factory is used
+* [feature] In your job, you can now set the jobInfo.Repeats to false to stop it from running again in the future
+
 ## 1.2.1
 * [fix] Support complex objects & lists in job parameters
 

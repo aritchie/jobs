@@ -12,7 +12,7 @@ namespace Plugin.Jobs.Infrastructure
 
             var job = Activator.CreateInstance(jobInfo.Type) as IJob;
             if (job == null)
-                throw new ArgumentException("Type is not IJob");
+                throw new ArgumentException("Type is not IJob or was not found");
 
             return job;
         }

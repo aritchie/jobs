@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Acr;
 using Newtonsoft.Json;
 
 
@@ -15,7 +14,7 @@ namespace Plugin.Jobs.Infrastructure
             this.conn = conn ?? new PluginSqliteConnection();
         }
 
-        
+
         public IEnumerable<JobInfo> GetJobs() => this.conn.Jobs.ToList().Select(x => new JobInfo
         {
             Name = x.Name,
@@ -94,6 +93,7 @@ namespace Plugin.Jobs.Infrastructure
                     BatteryNotLow = jobInfo.BatteryNotLow,
                     DeviceCharging = jobInfo.DeviceCharging,
                     RequiredNetwork = (int) jobInfo.RequiredNetwork,
+                    Repeat = jobInfo.Repeat,
                     Payload = this.ToPayload(jobInfo.Parameters)
                 });
             }
@@ -103,6 +103,7 @@ namespace Plugin.Jobs.Infrastructure
                 job.BatteryNotLow = jobInfo.BatteryNotLow;
                 job.DeviceCharging = jobInfo.DeviceCharging;
                 job.RequiredNetwork = (int)jobInfo.RequiredNetwork;
+                job.Repeat = jobInfo.Repeat;
                 job.Payload = this.ToPayload(jobInfo.Parameters);
                 if (updateDate)
                     job.LastRunUtc = jobInfo.LastRunUtc;
