@@ -1,4 +1,4 @@
-# ACR Background Jobs Plugin Plugin for Xamarin & Windows
+# ACR Background Jobs Plugin for Xamarin & Windows
 
 [Change Log - October 22, 2018](changelog.md)
 ### [SUPPORT THIS PROJECT](https://github.com/aritchie/home)
