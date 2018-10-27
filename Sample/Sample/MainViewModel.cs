@@ -39,6 +39,7 @@ namespace Sample
                     {
                         Name = this.JobName.Trim(),
                         Type = typeof(SampleJob),
+                        Repeat = this.Repeat,
                         BatteryNotLow = this.BatteryNotLow,
                         DeviceCharging = this.DeviceCharging,
                         RequiredNetwork = (NetworkType)Enum.Parse(typeof(NetworkType), this.NetworkType)

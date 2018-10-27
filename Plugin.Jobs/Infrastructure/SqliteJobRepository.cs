@@ -22,6 +22,7 @@ namespace Plugin.Jobs.Infrastructure
             LastRunUtc = x.LastRunUtc,
             //RunPeriodic = x.RunPeriodic,
             //DeviceIdle = x.DeviceIdle,
+            Repeat = x.Repeat,
             BatteryNotLow = x.BatteryNotLow,
             DeviceCharging = x.DeviceCharging,
             RequiredNetwork = (NetworkType)x.RequiredNetwork,
@@ -74,7 +75,6 @@ namespace Plugin.Jobs.Infrastructure
         public JobInfo GetByName(string jobName) => this
             .GetJobs()
             .FirstOrDefault(x => x.Name.Equals(jobName, StringComparison.CurrentCultureIgnoreCase));
-
 
         // logs are left for now
         public void Cancel(string jobName) => this.conn.Delete<DbJobInfo>(jobName);
