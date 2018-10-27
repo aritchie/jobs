@@ -153,6 +153,7 @@ namespace Sample
                 this.IsBusy = true;
                 this.Logs = this.jobManager
                     .GetLogs()
+                    .OrderByDescending(x => x.CreatedOn)
                     .Select(x => new CommandItem
                     {
                         Text = x.JobName,
