@@ -110,6 +110,8 @@ namespace Plugin.Jobs
         {
             this.JobStarted?.Invoke(this, job);
             var result = default(JobRunResult);
+            var cancel = false;
+
             try
             {
                 this.LogJob(JobState.Start, job, "manual");
@@ -120,8 +122,10 @@ namespace Plugin.Jobs
                     .ConfigureAwait(false);
 
                 if (!job.Repeat)
+                {
                     this.Cancel(job.Name);
-
+                    cancel = true;
+                }
                 this.LogJob(JobState.Finish, job, "manual");
                 result = new JobRunResult(job, null);
             }
@@ -132,8 +136,11 @@ namespace Plugin.Jobs
             }
             finally
             {
-                job.LastRunUtc = DateTime.UtcNow;
-                this.Repository.Persist(job, true);
+                if (!cancel)
+                {
+                    job.LastRunUtc = DateTime.UtcNow;
+                    this.Repository.Persist(job, true);
+                }
             }
             this.JobFinished?.Invoke(this, result);
             return result;
