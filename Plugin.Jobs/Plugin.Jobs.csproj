@@ -14,7 +14,7 @@ Supported Platforms
 * iOS 8+
 * UWP</Description>
         <Product>$(AssemblyName) ($(TargetFramework))</Product>
-        <PackageVersion>1.3.0</PackageVersion>
+        <PackageVersion>1.4.0</PackageVersion>
         <RepositoryUrl>https://github.com/aritchie/jobs</RepositoryUrl>
         <PackageProjectUrl>https://github.com/aritchie/jobs</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/aritchie/jobs/blob/master/LICENSE.md</PackageLicenseUrl>

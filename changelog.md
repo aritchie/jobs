@@ -1,5 +1,8 @@
 # CHANGE LOG
 
+## 1.4.0
+* [update] Update to Xamarin.Essentials 1.0.0
+
 ## 1.3.0
 * [feature] If container based job factory fails to find an instance, the default job factory is used
 * [feature] In your job, you can now set the jobInfo.Repeats to false to stop it from running again in the future
