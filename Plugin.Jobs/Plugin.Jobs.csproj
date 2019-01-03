@@ -59,19 +59,19 @@ Supported Platforms
     </ItemGroup>
 
     <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
-        <PackageReference Include="Xamarin.Essentials" Version="0.10.0-preview" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.0.0" />
         <Compile Include="Platforms\Android\**\*.cs" />
         <Compile Include="Platforms\Shared\**\*.cs" />
     </ItemGroup>
 
     <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
-        <PackageReference Include="Xamarin.Essentials" Version="0.10.0-preview" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.0.0" />
         <Compile Include="Platforms\iOS\**\*.cs" />
         <Compile Include="Platforms\Shared\**\*.cs" />
     </ItemGroup>
 
     <ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
-        <PackageReference Include="Xamarin.Essentials" Version="0.10.0-preview" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.0.0" />
         <Compile Include="Platforms\Uwp\**\*.cs" />
         <Compile Include="Platforms\Shared\**\*.cs" />
     </ItemGroup>

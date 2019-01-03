@@ -19,7 +19,7 @@ namespace Plugin.Jobs
             }
 
             var inetAvail = Connectivity.NetworkAccess == NetworkAccess.Internet;
-            var wifi = Connectivity.Profiles.Contains(ConnectionProfile.WiFi);
+            var wifi = Connectivity.ConnectionProfiles.Contains(ConnectionProfile.WiFi);
             if (job.RequiredNetwork == NetworkType.Any && !inetAvail)
                 return false;
 
