@@ -17,6 +17,13 @@ namespace Plugin.Jobs
         protected override bool CheckCriteria(JobInfo job) => job.IsEligibleToRun();
 
 
+        public override Task<bool> HasPermissions()
+        {
+            var r = UIApplication.SharedApplication.BackgroundRefreshStatus == UIBackgroundRefreshStatus.Available;
+            return Task.FromResult(r);
+        }
+
+
         public override async Task<JobRunResult> Run(string jobName, CancellationToken cancelToken)
         {
             using (var cancelSrc = new CancellationTokenSource())

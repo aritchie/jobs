@@ -16,7 +16,7 @@ namespace Plugin.Jobs
         protected override bool CheckCriteria(JobInfo job) => job.IsEligibleToRun();
 
 
-        public override async Task Schedule(JobInfo jobInfo)
+        public override async Task<bool> HasPermissions()
         {
             var requestStatus = await BackgroundExecutionManager.RequestAccessAsync();
             switch (requestStatus)
@@ -25,13 +25,17 @@ namespace Plugin.Jobs
                 //case BackgroundAccessStatus.AllowedWithAlwaysOnRealTimeConnectivity:
                 case BackgroundAccessStatus.AllowedSubjectToSystemPolicy:
                 case BackgroundAccessStatus.AlwaysAllowed:
-                    await base.Schedule(jobInfo);
-                    this.TryRegUwpJob();
-                    break;
+                    return true;
 
                 default:
-                    throw new ArgumentException("Request declined - " + requestStatus);
+                    return false;
             }
+        }
+
+        public override async Task Schedule(JobInfo jobInfo)
+        {
+            await base.Schedule(jobInfo);
+            this.TryRegUwpJob();
         }
 
 

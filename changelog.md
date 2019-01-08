@@ -1,5 +1,8 @@
 # CHANGE LOG
 
+## 1.4.1
+* [feature] add IJobManager.HasPermissions check
+
 ## 1.4.0
 * [update] Update to Xamarin.Essentials 1.0.0
 

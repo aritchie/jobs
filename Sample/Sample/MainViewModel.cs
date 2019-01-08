@@ -172,13 +172,14 @@ namespace Sample
         }
 
 
-        public void OnAppearing()
+        public async void OnAppearing()
         {
             this.LoadJobs.Execute(null);
             this.LoadLogs.Execute(null);
 
             this.jobManager.JobStarted += this.OnJobStarted;
             this.jobManager.JobFinished += this.OnJobFinished;
+            this.HasPermissions = await this.jobManager.HasPermissions();
         }
 
 
@@ -201,6 +202,7 @@ namespace Sample
 
         public List<CommandItem> Jobs { get; private set; }
         public List<CommandItem> Logs { get; private set; }
+        [Reactive] public bool HasPermissions { get; private set; }
         [Reactive] public string JobName { get; set; } = "TestJob";
         [Reactive] public int JobLoopCount { get; set; } = 10;
         [Reactive] public string NetworkType { get; set; } = Plugin.Jobs.NetworkType.None.ToString();

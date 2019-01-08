@@ -8,6 +8,9 @@ namespace Plugin.Jobs
 {
     public interface IJobManager
     {
+
+        Task<bool> HasPermissions();
+
         /// <summary>
         /// Runs a one time, adhoc task - on iOS, it will initiate a background task
         /// </summary>

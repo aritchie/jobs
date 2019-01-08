@@ -26,6 +26,9 @@ namespace Plugin.Jobs
         protected abstract bool CheckCriteria(JobInfo job);
 
 
+        public virtual Task<bool> HasPermissions() => Task.FromResult(true);
+
+
         public virtual async void RunTask(string taskName, Func<CancellationToken, Task> task)
         {
             try
