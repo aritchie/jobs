@@ -50,9 +50,7 @@ iOS, Android, & UWP implementations use [Xamarin Essentials](https://github.com/
 * [Cancelling Jobs](#cancel)
 * [Running Jobs On-Demand](#ondemand)
 * [Querying Jobs, Run Logs, & Events](other.md)
-* Dependency Injection
-    * [Autofac](autofac.md)
-    * [DryIoc](dryioc.md)
+* [Dependency Injection](di.md)
 * [FAQ - Frequently Asked Questions](faq.md)
     
 ## SETUP

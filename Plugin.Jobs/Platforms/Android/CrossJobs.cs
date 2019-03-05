@@ -3,7 +3,6 @@ using System.Linq;
 using Android.App;
 using Android.App.Job;
 using Android.Content;
-using Android.OS;
 using Java.Lang;
 
 
@@ -17,9 +16,9 @@ namespace Plugin.Jobs
         static CrossJobs() => Current = new JobManagerImpl();
 
 
-        public static void Init(Activity activity, Bundle savedInstanceState)
+        public static void Init(Application androidApp)
         {
-            Xamarin.Essentials.Platform.Init(activity, savedInstanceState);
+            Xamarin.Essentials.Platform.Init(androidApp);
             StartJobService();
         }
 

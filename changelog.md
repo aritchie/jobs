@@ -1,10 +1,12 @@
 # CHANGE LOG
 
-## 1.5.x
-* [feature] Ability to disable logging using CrossJobs.IsLoggingEnabled = false;
+## 2.0.x
+* [BREAKING] Job Factory has been removed in place of CrossJobs.ResolveJob(Func<JobInfo, IJob>)
+* [BREAKING] DI libraries have been removed - Android complicated this for most people 
 * [improvement] Android job service is managed better via Init
+* [improvement] You can enable/disable logging globally using CrossJob.IsLoggingEnabled = bool;
 * Android 9 support
-* DryIoc, Autofac, Xamarin Essentials, JSON.NET nuget version bumps
+* Xamarin Essentials, JSON.NET nuget version bumps
 
 ## 1.4.1
 * [feature] add IJobManager.HasPermissions check
