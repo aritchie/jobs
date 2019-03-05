@@ -149,11 +149,16 @@ namespace Plugin.Jobs
             return result;
         }
 
+
         protected virtual void LogJob(JobState state,
                                       JobInfo job,
                                       string runId,
                                       Exception exception = null)
-            => this.Repository.Log(new JobLog
+        {
+            if (!CrossJobs.IsLoggingEnabled)
+                return; 
+
+            this.Repository.Log(new JobLog
             {
                 JobName = job.Name,
                 RunId = runId,
@@ -161,15 +166,21 @@ namespace Plugin.Jobs
                 Status = state,
                 Error = exception?.ToString() ?? String.Empty
             });
+        }
 
 
         protected virtual void LogTask(JobState state, string taskName, Exception exception = null)
-            => this.Repository.Log(new JobLog
+        {
+            if (!CrossJobs.IsLoggingEnabled)
+                return; 
+
+            this.Repository.Log(new JobLog
             {
                 JobName = taskName,
                 CreatedOn = DateTime.UtcNow,
                 Status = state,
                 Error = exception?.ToString() ?? String.Empty
             });
+        }
     }
 }

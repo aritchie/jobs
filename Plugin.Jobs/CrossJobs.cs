@@ -5,6 +5,9 @@ namespace Plugin.Jobs
 {
     public static partial class CrossJobs
     {
+        public static bool IsLoggingEnabled { get; set; } = true;
+
+
         static IJobManager current;
         public static IJobManager Current
         {
