@@ -31,6 +31,7 @@ namespace Sample
 
             builder.Register(_ => UserDialogs.Instance).As<IUserDialogs>().SingleInstance();
             builder.RegisterType<GlobalExceptionHandler>().AsImplementedInterfaces().AutoActivate().SingleInstance();
+            builder.Register(_ => CrossJobs.Current).As<IJobManager>().SingleInstance();
             mainContainer = builder.Build();
 
             // This backfills for iOS and UWP, Android will have set this from MainApplication
