@@ -11,11 +11,11 @@
 
     <ItemGroup>
         <PackageReference Include="Acr.UserDialogs" Version="7.0.1" />
-        <PackageReference Include="Acr.XamForms" Version="4.0.0" />
-        <PackageReference Include="Autofac" Version="4.8.1" />
-        <PackageReference Include="ReactiveUI" Version="9.0.1" />
-        <PackageReference Include="ReactiveUI.Fody" Version="9.0.1" />
-        <PackageReference Include="Xamarin.Forms" Version="3.2.0.871581" />
+        <PackageReference Include="Acr.XamForms" Version="4.0.1" />
+        <PackageReference Include="Autofac" Version="4.9.1" />
+        <PackageReference Include="ReactiveUI" Version="9.11.1" />
+        <PackageReference Include="ReactiveUI.Fody" Version="9.11.1" />
+        <PackageReference Include="Xamarin.Forms" Version="3.5.0.169047" />
     </ItemGroup>
 
     <ItemGroup>

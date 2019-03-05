@@ -1,5 +1,11 @@
 # CHANGE LOG
 
+## 1.5.x
+* [feature] Ability to disable logging using CrossJobs.IsLoggingEnabled = false;
+* [improvement] Android job service is managed better via Init
+* Android 9 support
+* DryIoc, Autofac, Xamarin Essentials, JSON.NET nuget version bumps
+
 ## 1.4.1
 * [feature] add IJobManager.HasPermissions check
 
