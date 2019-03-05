@@ -1,15 +1,21 @@
 # ACR Background Jobs Plugin for Xamarin & Windows
 
-[Change Log - January 8, 2019](changelog.md)
-### [SUPPORT THIS PROJECT](https://github.com/aritchie/home)
+[Change Log - March 5, 2019](changelog.md)
+### [SUPPORT THIS PROJECT](https://allancritchie.net/projects)
 
-[![Build status](https://dev.azure.com/allanritchie/Plugins/_apis/build/status/Jobs)](https://dev.azure.com/allanritchie/Plugins/_build/latest?definitionId=0)
 
-|Library|NuGet|
-|-------|-----|
+|Library|NuGet
+|-------|-----
 Plugin.Jobs|[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs/)
 Plugin.Jobs.DryIoc|[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.DryIoc.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.DryIoc/)
 Plugin.Jobs.Autofac|[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.Autofac.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.Autofac/)
+
+### BUILDS
+Branch|Status
+------|------
+Master|[![Build status](https://dev.azure.com/allanritchie/Plugins/_apis/build/status/Jobs?branchName=master)](https://dev.azure.com/allanritchie/Plugins/_build/latest?definitionId=0)
+Dev|[![Build status](https://dev.azure.com/allanritchie/Plugins/_apis/build/status/Jobs?branchName=dev)](https://dev.azure.com/allanritchie/Plugins/_build/latest?definitionId=0)
+
 
 
 ## PLATFORMS
