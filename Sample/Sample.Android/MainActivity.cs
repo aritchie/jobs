@@ -28,8 +28,6 @@ namespace Sample.Droid
             UserDialogs.Init(() => (Activity)Forms.Context);
             Forms.Init(this, savedInstanceState);
             this.LoadApplication(new App());
-
-            CrossJobs.EnsureJobServiceStarted();
         }
     }
 }

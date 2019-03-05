@@ -7,6 +7,7 @@ using Android.App.Job;
 namespace Plugin.Jobs
 {
     [Service(
+        Name = "com.acrapps.JobsPluginService",
         Permission = "android.permission.BIND_JOB_SERVICE",
         Exported = true
     )]

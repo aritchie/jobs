@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 
 namespace Plugin.Jobs
@@ -13,25 +11,25 @@ namespace Plugin.Jobs
         protected override bool CheckCriteria(JobInfo job) => job.IsEligibleToRun();
 
 
-        public override async Task Schedule(JobInfo jobInfo)
-        {
-            await base.Schedule(jobInfo);
-            CrossJobs.StartJobService();
-        }
+        //public override async Task Schedule(JobInfo jobInfo)
+        //{
+        //    await base.Schedule(jobInfo);
+        //    CrossJobs.StartJobService();
+        //}
 
 
-        public override void Cancel(string jobId)
-        {
-            base.Cancel(jobId);
-            if (!this.Repository.GetJobs().Any())
-                CrossJobs.StopJobService();
-        }
+        //public override void Cancel(string jobId)
+        //{
+        //    base.Cancel(jobId);
+        //    if (!this.Repository.GetJobs().Any())
+        //        CrossJobs.StopJobService();
+        //}
 
 
-        public override void CancelAll()
-        {
-            base.CancelAll();
-            CrossJobs.StopJobService();
-        }
+        //public override void CancelAll()
+        //{
+        //    base.CancelAll();
+        //    CrossJobs.StopJobService();
+        //}
     }
 }

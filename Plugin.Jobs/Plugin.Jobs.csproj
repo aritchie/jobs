@@ -1,7 +1,7 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.55">
+﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.68">
     <PropertyGroup>
-        <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard2.0;MonoAndroid80;Xamarin.iOS10;uap10.0</TargetFrameworks>
-        <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard2.0;MonoAndroid80;Xamarin.iOS10</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;MonoAndroid80;Xamarin.iOS10</TargetFrameworks>
+        <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">$(TargetFrameworks);uap10.0.16299</TargetFrameworks>
         <Authors>aritchie</Authors>
         <Company />
         <AssemblyName>Plugin.Jobs</AssemblyName>
@@ -14,7 +14,7 @@ Supported Platforms
 * iOS 8+
 * UWP</Description>
         <Product>$(AssemblyName) ($(TargetFramework))</Product>
-        <PackageVersion>1.4.1</PackageVersion>
+        <PackageVersion>1.5.0</PackageVersion>
         <RepositoryUrl>https://github.com/aritchie/jobs</RepositoryUrl>
         <PackageProjectUrl>https://github.com/aritchie/jobs</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/aritchie/jobs/blob/master/LICENSE.md</PackageLicenseUrl>
