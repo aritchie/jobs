@@ -1,6 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.68">
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;MonoAndroid81;MonoAndroid90;Xamarin.iOS10</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;MonoAndroid81;Xamarin.iOS10</TargetFrameworks>
         <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">$(TargetFrameworks);uap10.0.16299</TargetFrameworks>
         <Authors>aritchie</Authors>
         <Company />
