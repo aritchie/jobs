@@ -11,17 +11,15 @@ namespace Plugin.Jobs
         public static void Init() => UIApplication.SharedApplication.SetMinimumBackgroundFetchInterval(UIApplication.BackgroundFetchIntervalMinimum);
 
 
-        public static void OnBackgroundFetch(Action<UIBackgroundFetchResult> completionHandler) => Current
-            .RunAll()
-            .ContinueWith(x =>
-            {
-                var results = x.Result;
-                if (!results.Any())
-                    completionHandler(UIBackgroundFetchResult.NoData);
-                else if (results.Any(y => !y.Success))
-                    completionHandler(UIBackgroundFetchResult.Failed);
-                else
-                    completionHandler(UIBackgroundFetchResult.NewData);
-            });
+        public async static void OnBackgroundFetch(Action<UIBackgroundFetchResult> completionHandler)
+        {
+            var results = await Current.RunAll().ConfigureAwait(false);
+            if (results == null || !results.Any())
+                completionHandler(UIBackgroundFetchResult.NoData);
+            else if (results.Any(y => !y.Success))
+                completionHandler(UIBackgroundFetchResult.Failed);
+            else
+                completionHandler(UIBackgroundFetchResult.NewData);
+        }
     }
 }
