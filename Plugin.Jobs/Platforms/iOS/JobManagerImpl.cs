@@ -14,7 +14,7 @@ namespace Plugin.Jobs
         }
 
 
-        protected override bool CheckCriteria(JobInfo job) => job.IsEligibleToRun();
+        protected override bool CheckCriteria(JobInfo job) => true;
 
 
         public override Task<bool> HasPermissions()

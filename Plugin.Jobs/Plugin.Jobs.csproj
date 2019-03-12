@@ -65,9 +65,7 @@ Supported Platforms
     </ItemGroup>
 
     <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
-        <PackageReference Include="Xamarin.Essentials" Version="1.0.1" />
         <Compile Include="Platforms\iOS\**\*.cs" />
-        <Compile Include="Platforms\Shared\**\*.cs" />
     </ItemGroup>
 
     <ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) ">

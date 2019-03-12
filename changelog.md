@@ -3,7 +3,8 @@
 ## 2.0 [patch]
 * [fix][uwp] Default period timespan needs to be a minimum of 15 mins
 * [fix][uwp] Deal with background cancellations
-* [fix][all] Safety job loading
+* [fix][all] Safety job loading in Run & RunAll
+* [fix][ios] don't check preconditions - OS will already have figured this out
 * [breaking] CrossJobs.LogLevel allows None|ErrorsOnly|All replacing IsLoggingEnabled flag
 
 ## 2.0.x
@@ -11,7 +12,6 @@
 * [BREAKING] DI libraries have been removed - Android complicated this for most people 
 * [improvement] Android job service is managed better via Init
 * [improvement] You can enable/disable logging globally using CrossJob.IsLoggingEnabled = bool;
-* Android 9 support
 * Xamarin Essentials, JSON.NET nuget version bumps
 
 ## 1.4.1
