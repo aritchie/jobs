@@ -72,7 +72,11 @@ namespace Plugin.Jobs
                 //builder.SetTrigger(new GattServiceProviderTrigger());
                 //builder.SetTrigger(new GeovisitTrigger());
                 //builder.SetTrigger(new ToastNotificationActionTrigger());
+
                 var runMins = Convert.ToUInt32(Math.Round(CrossJobs.PeriodicRunTime.TotalMinutes, 0));
+                if (runMins < 15)
+                    throw new ArgumentException("PeriodicRunTime must be minimum of 15mins");
+
                 builder.SetTrigger(new TimeTrigger(runMins, false));
                 builder.Register();
             }

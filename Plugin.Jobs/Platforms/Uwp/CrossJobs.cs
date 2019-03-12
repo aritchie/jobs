@@ -15,6 +15,6 @@ namespace Plugin.Jobs
         public static TimeSpan PeriodicRunTime { get; private set; }
 
         public static void Init(TimeSpan? periodTime = null)
-            => PeriodicRunTime = periodTime ?? TimeSpan.FromMinutes(10);
+            => PeriodicRunTime = periodTime ?? TimeSpan.FromMinutes(15);
     }
 }
