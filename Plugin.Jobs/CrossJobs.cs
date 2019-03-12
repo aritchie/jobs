@@ -5,7 +5,9 @@ namespace Plugin.Jobs
 {
     public static partial class CrossJobs
     {
-        public static bool IsLoggingEnabled { get; set; } = true;
+        public static JobLogLevel LogLevel { get; set; } = JobLogLevel.ErrorsOnly;
+
+
         public static Func<JobInfo, IJob> ResolveJob { get; set; } = (jobInfo) =>
         {
             if (jobInfo.Type == null)
@@ -15,7 +17,7 @@ namespace Plugin.Jobs
             if (job == null)
                 throw new ArgumentException("Type is not IJob or was not found");
 
-            return job;            
+            return job;
         };
 
 

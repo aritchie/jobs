@@ -1,5 +1,11 @@
 # CHANGE LOG
 
+## 2.0 [patch]
+* [fix][uwp] Default period timespan needs to be a minimum of 15 mins
+* [fix][uwp] Deal with background cancellations
+* [fix][all] Safety job loading
+* [breaking] CrossJobs.LogLevel allows None|ErrorsOnly|All replacing IsLoggingEnabled flag
+
 ## 2.0.x
 * [BREAKING] Job Factory has been removed in place of CrossJobs.ResolveJob(Func<JobInfo, IJob>)
 * [BREAKING] DI libraries have been removed - Android complicated this for most people 

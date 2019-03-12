@@ -40,12 +40,25 @@ namespace Plugin.Jobs
 
         public virtual async Task<JobRunResult> Run(string jobName, CancellationToken cancelToken)
         {
-            var job = this.Repository.GetByName(jobName);
-            if (job == null)
-                throw new ArgumentException("No job found named " + jobName);
+            JobInfo job = null;
+            try
+            {
+                job = this.Repository.GetByName(jobName);
+                if (job == null)
+                    throw new ArgumentException("No job found named " + jobName);
 
-            var result = await this.RunJob(job, "manual", cancelToken).ConfigureAwait(false);
-            return result;
+                var result = await this.RunJob(job, jobName, cancelToken).ConfigureAwait(false);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                job = job ?? new JobInfo
+                {
+                    Name = jobName,
+                    Type = typeof(object)
+                };
+                return new JobRunResult(job, ex);
+            }
         }
 
 
@@ -80,37 +93,51 @@ namespace Plugin.Jobs
         }
 
 
-        public virtual Task<IEnumerable<JobRunResult>> RunAll(CancellationToken cancelToken) => Task.Run(async () =>
+        public virtual async Task<IEnumerable<JobRunResult>> RunAll(CancellationToken cancelToken)
         {
-            if (this.IsRunning)
-                throw new ArgumentException("Job manager is already running");
-
-            this.IsRunning = true;
-            var jobs = this.Repository.GetJobs();
+            var list = new List<JobRunResult>();
             var runId = Guid.NewGuid().ToString();
-            var tasks = new List<Task<JobRunResult>>();
 
-            foreach (var job in jobs)
+            if (!this.IsRunning)
             {
-                if (this.CheckCriteria(job))
-                    tasks.Add(this.RunJob(job, runId, cancelToken));
-            }
+                try
+                {
+                    this.IsRunning = true;
+                    var jobs = this.Repository.GetJobs();
+                    var tasks = new List<Task<JobRunResult>>();
 
-            await Task.WhenAll(tasks).ConfigureAwait(false);
-            var results = tasks.Select(x => x.Result).AsEnumerable();
-            this.IsRunning = false;
-            return results;
-        });
+                    foreach (var job in jobs)
+                    {
+                        if (this.CheckCriteria(job))
+                            tasks.Add(this.RunJob(job, runId, cancelToken));
+                    }
+
+                    await Task.WhenAll(tasks).ConfigureAwait(false);
+                    list = tasks.Select(x => x.Result).ToList();
+                }
+                catch (Exception ex)
+                {
+                    var jobInfo = new JobInfo { Name = "NO_JOB" };
+                    list.Add(new JobRunResult(jobInfo, ex));
+                    this.LogJob(JobState.Error, jobInfo, runId, ex);
+                }
+                finally
+                {
+                    this.IsRunning = false;
+                }
+            }
+            return list;
+        }
 
 
         protected virtual async Task<JobRunResult> RunJob(JobInfo job, string batchName, CancellationToken cancelToken)
         {
-            this.JobStarted?.Invoke(this, job);
             var result = default(JobRunResult);
             var cancel = false;
 
             try
             {
+                this.JobStarted?.Invoke(this, job);
                 this.LogJob(JobState.Start, job, "manual");
                 var service = CrossJobs.ResolveJob(job);
 
@@ -149,8 +176,8 @@ namespace Plugin.Jobs
                                       string runId,
                                       Exception exception = null)
         {
-            if (!CrossJobs.IsLoggingEnabled)
-                return; 
+            if (!this.ShouldWriteLog(exception))
+                return;
 
             this.Repository.Log(new JobLog
             {
@@ -165,8 +192,8 @@ namespace Plugin.Jobs
 
         protected virtual void LogTask(JobState state, string taskName, Exception exception = null)
         {
-            if (!CrossJobs.IsLoggingEnabled)
-                return; 
+            if (!this.ShouldWriteLog(exception))
+                return;
 
             this.Repository.Log(new JobLog
             {
@@ -175,6 +202,23 @@ namespace Plugin.Jobs
                 Status = state,
                 Error = exception?.ToString() ?? String.Empty
             });
+        }
+
+
+        protected virtual bool ShouldWriteLog(Exception exception)
+        {
+            switch (CrossJobs.LogLevel)
+            {
+                case JobLogLevel.None:
+                    return false;
+
+                case JobLogLevel.All:
+                    return true;
+
+                case JobLogLevel.ErrorsOnly:
+                default:
+                    return exception != null;
+            }
         }
     }
 }
