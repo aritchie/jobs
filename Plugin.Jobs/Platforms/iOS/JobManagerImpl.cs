@@ -31,7 +31,7 @@ namespace Plugin.Jobs
                 using (cancelToken.Register(() => cancelSrc.Cancel()))
                 {
                     var app = UIApplication.SharedApplication;
-                    var taskId = (int) app.BeginBackgroundTask(jobName, cancelSrc.Cancel);
+                    var taskId = (int)app.BeginBackgroundTask(jobName, cancelSrc.Cancel);
                     var result = await base.Run(jobName, cancelSrc.Token);
                     app.EndBackgroundTask(taskId);
                     return result;
@@ -40,20 +40,20 @@ namespace Plugin.Jobs
         }
 
 
-        public override async Task<IEnumerable<JobRunResult>> RunAll(CancellationToken cancelToken)
-        {
-            using (var cancelSrc = new CancellationTokenSource())
-            {
-                using (cancelToken.Register(() => cancelSrc.Cancel()))
-                {
-                    var app = UIApplication.SharedApplication;
-                    var taskId = (int) app.BeginBackgroundTask("RunAll", cancelSrc.Cancel);
-                    var result = await base.RunAll(cancelSrc.Token);
-                    app.EndBackgroundTask(taskId);
-                    return result;
-                }
-            }
-        }
+        //public override async Task<IEnumerable<JobRunResult>> RunAll(CancellationToken cancelToken)
+        //{
+        //    using (var cancelSrc = new CancellationTokenSource())
+        //    {
+        //        using (cancelToken.Register(() => cancelSrc.Cancel()))
+        //        {
+        //            var app = UIApplication.SharedApplication;
+        //            var taskId = (int) app.BeginBackgroundTask("RunAll", cancelSrc.Cancel);
+        //            var result = await base.RunAll(cancelSrc.Token);
+        //            app.EndBackgroundTask(taskId);
+        //            return result;
+        //        }
+        //    }
+        //}
 
 
         public override async void RunTask(string taskName, Func<CancellationToken, Task> task)

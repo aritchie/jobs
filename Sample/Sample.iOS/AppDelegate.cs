@@ -13,8 +13,9 @@ namespace Sample.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            app.SetMinimumBackgroundFetchInterval(UIApplication.BackgroundFetchIntervalMinimum);
             CrossJobs.LogLevel = JobLogLevel.All;
-            CrossJobs.Init();
+            CrossJobs.Init(900);
             Forms.Init();
             this.LoadApplication(new App());
 

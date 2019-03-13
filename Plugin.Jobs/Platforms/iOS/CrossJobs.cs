@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Threading;
 using UIKit;
 
 
@@ -25,13 +25,31 @@ namespace Plugin.Jobs
 
         public async static void OnBackgroundFetch(Action<UIBackgroundFetchResult> completionHandler)
         {
-            var results = await Current.RunAll().ConfigureAwait(false);
-            if (results == null || !results.Any())
-                completionHandler(UIBackgroundFetchResult.NoData);
-            else if (results.Any(y => !y.Success))
-                completionHandler(UIBackgroundFetchResult.Failed);
-            else
-                completionHandler(UIBackgroundFetchResult.NewData);
+            var result = UIBackgroundFetchResult.NoData;
+            var app = UIApplication.SharedApplication;
+            var taskId = 0;
+
+            try
+            {
+                using (var cancelSrc = new CancellationTokenSource())
+                {
+                    taskId = (int)app.BeginBackgroundTask("RunAll", cancelSrc.Cancel);
+                    await Current
+                        .RunAll(cancelSrc.Token)
+                        .ConfigureAwait(false);
+
+                    result = UIBackgroundFetchResult.NewData;
+                }
+            }
+            catch
+            {
+                result = UIBackgroundFetchResult.Failed;
+            }
+            finally
+            {
+                completionHandler(result);
+                app.EndBackgroundTask(taskId);
+            }
         }
     }
 }
