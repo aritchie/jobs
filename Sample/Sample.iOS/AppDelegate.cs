@@ -13,6 +13,7 @@ namespace Sample.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            CrossJobs.LogLevel = JobLogLevel.All;
             CrossJobs.Init();
             Forms.Init();
             this.LoadApplication(new App());
@@ -22,8 +23,6 @@ namespace Sample.iOS
 
 
         public override void PerformFetch(UIApplication application, Action<UIBackgroundFetchResult> completionHandler)
-        {
-            CrossJobs.OnBackgroundFetch(completionHandler);
-        }
+            => CrossJobs.OnBackgroundFetch(completionHandler);
     }
 }

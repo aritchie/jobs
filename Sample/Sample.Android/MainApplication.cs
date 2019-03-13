@@ -16,6 +16,7 @@ namespace Sample.Droid
 
         public override void OnCreate()
         {
+            CrossJobs.LogLevel = JobLogLevel.All;
             CrossJobs.ResolveJob = (jobInfo) => App.ResolveJob(jobInfo);
             CrossJobs.Init(this);
             base.OnCreate();
