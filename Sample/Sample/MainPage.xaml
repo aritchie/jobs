@@ -20,7 +20,9 @@
 
                 <TableView Intent="Form" Grid.Row="0">
                     <TableSection>
-                        <TextCell Text="Has Permission" Detail="{Binding HasPermission}" />
+                        <SwitchCell Text="Has Permission"
+                                    On="{Binding HasPermissions}"
+                                    IsEnabled="False" />
                     </TableSection>
                     <TableSection>
                         <EntryCell Label="Job Name"
