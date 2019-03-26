@@ -11,22 +11,26 @@ namespace Plugin.Jobs
         {
             var pluggedIn = Battery.State == BatteryState.Charging || Battery.State == BatteryState.Full;
 
-            if (job.BatteryNotLow)
-            {
-                var lowBattery = Battery.ChargeLevel <= 0.2;
-                if (!pluggedIn && lowBattery)
-                    return false;
-            }
+            if (job.DeviceCharging && !pluggedIn)
+                return false;
+
+            if (job.BatteryNotLow && !pluggedIn && Battery.ChargeLevel <= 0.2)
+                return false;
 
             var inetAvail = Connectivity.NetworkAccess == NetworkAccess.Internet;
             var wifi = Connectivity.ConnectionProfiles.Contains(ConnectionProfile.WiFi);
-            if (job.RequiredNetwork == NetworkType.Any && !inetAvail)
-                return false;
 
-            if (job.RequiredNetwork == NetworkType.WiFi && !wifi)
-                return false;
+            switch (job.RequiredNetwork)
+            {
+                case NetworkType.Any:
+                    return inetAvail;
 
-            return true;
+                case NetworkType.WiFi:
+                    return inetAvail && wifi;
+
+                default:
+                    return true;
+            }
         }
     }
 }
