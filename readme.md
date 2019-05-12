@@ -1,14 +1,11 @@
+# UPDATE - This library has is moving to the Shiny Framework at https://github.com/shinyorg/shiny but will continue to offer support for now
+
 # ACR Background Jobs Plugin for Xamarin & Windows
 
 [Change Log - March 5, 2019](changelog.md)
 ### [SUPPORT THIS PROJECT](https://allancritchie.net/projects)
 
-
-|Library|NuGet
-|-------|-----
 Plugin.Jobs|[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs/)
-Plugin.Jobs.DryIoc|[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.DryIoc.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.DryIoc/)
-Plugin.Jobs.Autofac|[![NuGet](https://img.shields.io/nuget/v/Plugin.Jobs.Autofac.svg?maxAge=2592000)](https://www.nuget.org/packages/Plugin.Jobs.Autofac/)
 
 ### BUILDS
 Branch|Status
