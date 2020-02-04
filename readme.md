@@ -1,4 +1,4 @@
-# UPDATE - This library has is moving to the Shiny Framework at https://github.com/shinyorg/shiny but will continue to offer support for now
+# UPDATE - This library has has moved to the Shiny Framework at https://github.com/shinyorg/shiny 
 
 # ACR Background Jobs Plugin for Xamarin & Windows
 
