@@ -50,7 +50,7 @@ Supported Platforms
         <None Include="Platforms\**\*.cs" />
         <PackageReference Include="Acr.Core" Version="3.0.1" />
         <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" Condition=" '$(OS)' == 'Windows_NT' " />
     </ItemGroup>
 
